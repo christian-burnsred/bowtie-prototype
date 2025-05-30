@@ -1,6 +1,6 @@
 import { Box, HStack, VStack } from "@chakra-ui/react";
 import { useState } from "react";
-import { Xwrapper} from "react-xarrows";
+import { Xwrapper } from "react-xarrows";
 
 import { DemOverview } from "./NodeBlocks/DemOverview.tsx";
 import { DemSpecific } from "./NodeBlocks/DemSpecific.tsx";
