@@ -3,8 +3,6 @@ import { type SystemStyleObject } from "@chakra-ui/react";
 export const demSpecificSx: SystemStyleObject = {
   width: "100%",
   // maxWidth: "250px",
-  p: "12px",
-  py: "20px",
   borderRadius: "5px",
   bg: "white",
   boxShadow: "0 8px 16px 0 rgba(160, 174, 192, 0.32)",
@@ -12,6 +10,9 @@ export const demSpecificSx: SystemStyleObject = {
 };
 
 export const accordionSx: SystemStyleObject = {
+  px: "12px",
+  py: "20px",
+
   "& .chakra-accordion__item": {
     mb: 1,
     border: "none",

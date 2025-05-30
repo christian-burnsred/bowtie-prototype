@@ -2,11 +2,12 @@ import { Box, Icon, Select, Text } from "@chakra-ui/react";
 import { MdOutlineDirectionsCar } from "react-icons/md";
 
 import {
-    DEMNodeSx,
-    ImpactNodeSx,
-    SupportFactorNodeSx,
-    controlNodeSx,
-    scenarioNodeSx, DEMNodeConciseSx,
+  DEMNodeConciseSx,
+  DEMNodeSx,
+  ImpactNodeSx,
+  SupportFactorNodeSx,
+  controlNodeSx,
+  scenarioNodeSx,
 } from "./Nodes.styles.ts";
 
 interface ScenarioNodeProps {

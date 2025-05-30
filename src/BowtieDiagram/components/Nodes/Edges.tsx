@@ -1,10 +1,10 @@
 import Xarrow from "react-xarrows";
 
-interface EdgesProps {
+interface AllScenariosEdgesProps {
   scenarioIds: string[];
 }
 
-const Edges = ({ scenarioIds }: EdgesProps) => {
+export const AllScenariosEdges = ({ scenarioIds }: AllScenariosEdgesProps) => {
   return (
     <>
       {scenarioIds.map((scenarioId) => (
@@ -82,4 +82,79 @@ const Edges = ({ scenarioIds }: EdgesProps) => {
   );
 };
 
-export default Edges;
+interface SpecificScenariosEdgesProps {
+  scenarioId: string;
+}
+
+export const SpecificScenariosEdges = ({
+  scenarioId,
+}: SpecificScenariosEdgesProps) => {
+  return (
+    <>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <>
+          <Xarrow
+            key={`scenario-to-control-${i}`}
+            start={scenarioId}
+            startAnchor="right"
+            end={`accordion-button-specific-control-${i}`}
+            endAnchor="left"
+            color="#01ab8b"
+            strokeWidth={1}
+            curveness={0.3}
+            showTail={true}
+            headShape="circle"
+            tailShape="circle"
+            headColor="black"
+            tailColor="black"
+          />
+          <Xarrow
+            key={`control-${i}-to-impact`}
+            start={`accordion-button-specific-control-${i}`}
+            startAnchor="right"
+            end={`impact-node`}
+            endAnchor="left"
+            color="#db4742"
+            strokeWidth={1}
+            curveness={0.3}
+            showTail={true}
+            headShape="circle"
+            tailShape="circle"
+            headColor="black"
+            tailColor="black"
+          />
+        </>
+      ))}
+      <Xarrow
+        key={`dem-specific-to-sf-left`}
+        start={`dem-specific-left`}
+        startAnchor="bottom"
+        end={`support-factor-node`}
+        endAnchor="top"
+        color="gray"
+        strokeWidth={1}
+        curveness={0.3}
+        showTail={true}
+        headShape="circle"
+        tailShape="circle"
+        headColor="black"
+        tailColor="black"
+      />
+      <Xarrow
+        key={`dem-specific-to-sf-right`}
+        start={`dem-specific-right`}
+        startAnchor="bottom"
+        end={`support-factor-node`}
+        endAnchor="top"
+        color="gray"
+        strokeWidth={1}
+        curveness={0.3}
+        showTail={true}
+        headShape="circle"
+        tailShape="circle"
+        headColor="black"
+        tailColor="black"
+      />
+    </>
+  );
+};
