@@ -98,20 +98,15 @@ const PrevenativeGrid = ({
   return (
     <VStack flex={4}>
       <PrevenativeGridHeader />
-      <Grid
-        w="100%"
-        templateRows="repeat(3, 1fr)"
-        templateColumns="repeat(4, 1fr)"
-        gap={1}
-      >
+      <Grid w="100%" templateColumns="repeat(4, minmax(0, 1fr))" gap={1}>
         {/* Row 1 */}
         <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem w="100%" h="48px">
+        <GridItem colSpan={1} w="100%" h="48px">
           <ControlNodeInGrid
             rowIndex={1}
             onControlNodeClick={onControlNodeClick}
             isExpanded={expandedRow === 1}
-            controlName={"Travel motion lock out"}
+            controlName={"Travel motion lockout"}
           />
         </GridItem>
         <GridItem colSpan={2} w="100%" h="48px">
@@ -119,7 +114,9 @@ const PrevenativeGrid = ({
             rowIndex={2}
             onControlNodeClick={onControlNodeClick}
             isExpanded={expandedRow === 2}
-            controlName={"Autonomous emergency (aeb)"}
+            controlName={
+              "Autonomous emergency braking (aeb) with pedestrian detection (front)"
+            }
           />
         </GridItem>
 
@@ -130,7 +127,7 @@ const PrevenativeGrid = ({
             rowIndex={3}
             onControlNodeClick={onControlNodeClick}
             isExpanded={expandedRow === 3}
-            controlName={"Travel motion lock out"}
+            controlName={"Travel motion lockout"}
           />
         </GridItem>
         <GridItem colSpan={2} w="100%" h="48px">
@@ -138,7 +135,9 @@ const PrevenativeGrid = ({
             rowIndex={4}
             onControlNodeClick={onControlNodeClick}
             isExpanded={expandedRow === 4}
-            controlName={"Autonomous emergency (aeb)"}
+            controlName={
+              "Autonomous emergency braking (aeb) with pedestrian detection (front)"
+            }
           />
         </GridItem>
 
@@ -152,6 +151,107 @@ const PrevenativeGrid = ({
             controlName={"Two-way radios and usage"}
           />
         </GridItem>
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+
+        {/* Row 4 */}
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem colSpan={2} w="100%" h="48px">
+          <ControlNodeInGrid
+            rowIndex={6}
+            onControlNodeClick={onControlNodeClick}
+            isExpanded={expandedRow === 6}
+            controlName={"Pedestrian proximity detection system (pds) alert"}
+          />
+        </GridItem>
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+
+        {/* Row 5 */}
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem colSpan={2} w="100%" h="48px">
+          <ControlNodeInGrid
+            rowIndex={7}
+            onControlNodeClick={onControlNodeClick}
+            isExpanded={expandedRow === 7}
+            controlName={"Reversing cameras"}
+          />
+        </GridItem>
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+
+        {/* Row 6 */}
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem colSpan={1} w="100%" h="48px">
+          <ControlNodeInGrid
+            rowIndex={8}
+            onControlNodeClick={onControlNodeClick}
+            isExpanded={expandedRow === 8}
+            controlName={"Reversing cameras"}
+          />
+        </GridItem>
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+
+        {/* Row 7 */}
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem colSpan={1} w="100%" h="48px">
+          <ControlNodeInGrid
+            rowIndex={9}
+            onControlNodeClick={onControlNodeClick}
+            isExpanded={expandedRow === 9}
+            controlName={"Vehicle articulation lock"}
+          />
+        </GridItem>
+        <GridItem colSpan={1} w="100%" h="48px">
+          <ControlNodeInGrid
+            rowIndex={10}
+            onControlNodeClick={onControlNodeClick}
+            isExpanded={expandedRow === 10}
+            controlName={"Operator distraction and alertness system"}
+          />
+        </GridItem>
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+
+        {/* Row 8 */}
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem colSpan={1} w="100%" h="48px">
+          <ControlNodeInGrid
+            rowIndex={11}
+            onControlNodeClick={onControlNodeClick}
+            isExpanded={expandedRow === 11}
+            controlName={"Pedestrian separation by distance (10m)"}
+          />
+        </GridItem>
+        <GridItem colSpan={1} w="100%" h="48px">
+          <ControlNodeInGrid
+            rowIndex={12}
+            onControlNodeClick={onControlNodeClick}
+            isExpanded={expandedRow === 12}
+            controlName={"Moving off information system (mois)"}
+          />
+        </GridItem>
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+
+        {/* Row 9 */}
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem colSpan={2} w="100%" h="48px">
+          <ControlNodeInGrid
+            rowIndex={13}
+            onControlNodeClick={onControlNodeClick}
+            isExpanded={expandedRow === 13}
+            controlName={"On-vehicle mirrors"}
+          />
+        </GridItem>
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+
+        {/* Row 10 */}
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+
+        {/* Row 11 */}
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
         <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
       </Grid>
     </VStack>
@@ -192,20 +292,15 @@ const MitigativeGrid = ({
   return (
     <VStack flex={2}>
       <MitigativeGridHeader />
-      <Grid
-        w="100%"
-        templateRows="repeat(3, 1fr)"
-        templateColumns="repeat(2, 1fr)"
-        gap={1}
-      >
+      <Grid w="100%" templateColumns="repeat(2, minmax(0, 1fr))" gap={1}>
         {/* Row 1 */}
         <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
         <GridItem w="100%" h="48px">
           <ControlNodeInGrid
-            rowIndex={6}
+            rowIndex={14}
             onControlNodeClick={onControlNodeClick}
-            isExpanded={expandedRow === 6}
-            controlName={"Travel motion lock out"}
+            isExpanded={expandedRow === 14}
+            controlName={"Emergency response route alert"}
           />
         </GridItem>
 
@@ -217,12 +312,36 @@ const MitigativeGrid = ({
         <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
         <GridItem w="100%" h="48px">
           <ControlNodeInGrid
-            rowIndex={7}
+            rowIndex={15}
             onControlNodeClick={onControlNodeClick}
-            isExpanded={expandedRow === 7}
-            controlName={"Travel motion lock out"}
+            isExpanded={expandedRow === 15}
+            controlName={"Two ways radio and usage"}
           />
         </GridItem>
+
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
       </Grid>
     </VStack>
   );
@@ -302,7 +421,6 @@ const ControlNodeInGrid = ({
             whiteSpace="nowrap"
             overflow="hidden"
             textOverflow="ellipsis"
-            minWidth="0"
           >
             {controlName}
           </Box>
