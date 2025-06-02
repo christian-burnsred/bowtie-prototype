@@ -1,4 +1,4 @@
-import { ChevronDownIcon, Flex } from "@chakra-ui/icons";
+import { ChevronDownIcon, Flex, MenuButton } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -6,22 +6,95 @@ import {
   GridItem,
   HStack,
   Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   VStack,
 } from "@chakra-ui/react";
+import { type RefObject, useRef, useState } from "react";
 
 export const DemSpecificEventPhase = () => {
+  const [expandedRow, setExpandedRow] = useState<number | null>(null);
+  const [buttonPosition, setButtonPosition] = useState({
+    top: 0,
+    left: 0,
+    width: 0,
+  });
+
+  const handleControlNodeClick = (
+    rowIndex: number,
+    buttonRef: RefObject<HTMLButtonElement | null>,
+  ) => {
+    if (expandedRow === rowIndex) {
+      setExpandedRow(null);
+    } else {
+      setExpandedRow(rowIndex);
+      // Get button position for overlay positioning
+      if (buttonRef && buttonRef.current) {
+        const rect = buttonRef.current.getBoundingClientRect();
+        const containerRect = buttonRef.current
+          .closest("[data-container]")
+          ?.getBoundingClientRect() || { left: 0, top: 0 };
+        setButtonPosition({
+          top: rect.bottom - containerRect.top,
+          left: rect.left - containerRect.left,
+          width: rect.width,
+        });
+      }
+    }
+  };
+
   return (
-    <HStack pt={"26px"} spacing={1}>
-      <PrevenativeGrid />
-      <MitigativeGrid />
-    </HStack>
+    <Box position="relative" pt={"26px"} w="100%" data-container>
+      <VStack spacing={1} w="100%">
+        <HStack spacing={1} w="100%">
+          <PrevenativeGrid
+            expandedRow={expandedRow}
+            onControlNodeClick={handleControlNodeClick}
+          />
+          <MitigativeGrid
+            expandedRow={expandedRow}
+            onControlNodeClick={handleControlNodeClick}
+          />
+        </HStack>
+      </VStack>
+
+      {expandedRow !== null && (
+        <Box
+          position="absolute"
+          top={`${buttonPosition.top + 5}px`}
+          w="100%"
+          h="300px"
+          border="2px solid"
+          borderColor="orange.500"
+          borderRadius="6px"
+          bg="white"
+          p={4}
+          boxShadow="lg"
+          zIndex={1000}
+        >
+          <Box fontSize="sm" fontWeight="bold" mb={2}>
+            Expanded Control Details - Row {expandedRow + 1}
+          </Box>
+          <Box fontSize="xs" color="gray.600">
+            This box appears when a control node is clicked and hovers below the
+            button like a dropdown.
+          </Box>
+        </Box>
+      )}
+    </Box>
   );
 };
 
-const PrevenativeGrid = () => {
+interface PrevenativeGridProps {
+  expandedRow: number | null;
+  onControlNodeClick: (
+    rowIndex: number,
+    buttonRef: RefObject<HTMLButtonElement | null>,
+  ) => void;
+}
+
+const PrevenativeGrid = ({
+  expandedRow,
+  onControlNodeClick,
+}: PrevenativeGridProps) => {
   return (
     <VStack flex={4}>
       <PrevenativeGridHeader />
@@ -31,20 +104,54 @@ const PrevenativeGrid = () => {
         templateColumns="repeat(4, 1fr)"
         gap={1}
       >
+        {/* Row 1 */}
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem w="100%" h="48px">
+          <ControlNodeInGrid
+            rowIndex={1}
+            onControlNodeClick={onControlNodeClick}
+            isExpanded={expandedRow === 1}
+            controlName={"Travel motion lock out"}
+          />
+        </GridItem>
+        <GridItem colSpan={2} w="100%" h="48px">
+          <ControlNodeInGrid
+            rowIndex={2}
+            onControlNodeClick={onControlNodeClick}
+            isExpanded={expandedRow === 2}
+            controlName={"Autonomous emergency (aeb)"}
+          />
+        </GridItem>
+
+        {/* Row 2 */}
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem colSpan={1} w="100%" h="48px">
+          <ControlNodeInGrid
+            rowIndex={3}
+            onControlNodeClick={onControlNodeClick}
+            isExpanded={expandedRow === 3}
+            controlName={"Travel motion lock out"}
+          />
+        </GridItem>
+        <GridItem colSpan={2} w="100%" h="48px">
+          <ControlNodeInGrid
+            rowIndex={4}
+            onControlNodeClick={onControlNodeClick}
+            isExpanded={expandedRow === 4}
+            controlName={"Autonomous emergency (aeb)"}
+          />
+        </GridItem>
+
+        {/* Row 3 */}
         <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
         <GridItem colSpan={2} w="100%" h="48px">
-          <ControlNodeInGrid />
+          <ControlNodeInGrid
+            rowIndex={5}
+            onControlNodeClick={onControlNodeClick}
+            isExpanded={expandedRow === 5}
+            controlName={"Two-way radios and usage"}
+          />
         </GridItem>
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
         <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
       </Grid>
     </VStack>
@@ -78,7 +185,10 @@ const PrevenativeGridHeader = () => {
   );
 };
 
-const MitigativeGrid = () => {
+const MitigativeGrid = ({
+  expandedRow,
+  onControlNodeClick,
+}: PrevenativeGridProps) => {
   return (
     <VStack flex={2}>
       <MitigativeGridHeader />
@@ -88,14 +198,31 @@ const MitigativeGrid = () => {
         templateColumns="repeat(2, 1fr)"
         gap={1}
       >
+        {/* Row 1 */}
+        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem w="100%" h="48px">
+          <ControlNodeInGrid
+            rowIndex={6}
+            onControlNodeClick={onControlNodeClick}
+            isExpanded={expandedRow === 6}
+            controlName={"Travel motion lock out"}
+          />
+        </GridItem>
+
+        {/* Row 2 */}
         <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
         <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
 
+        {/* Row 3 */}
         <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+        <GridItem w="100%" h="48px">
+          <ControlNodeInGrid
+            rowIndex={7}
+            onControlNodeClick={onControlNodeClick}
+            isExpanded={expandedRow === 7}
+            controlName={"Travel motion lock out"}
+          />
+        </GridItem>
       </Grid>
     </VStack>
   );
@@ -127,40 +254,66 @@ const MitigativeGridHeader = () => {
   );
 };
 
-const ControlNodeInGrid = () => {
+interface ControlNodeInGridProps {
+  rowIndex: number;
+  onControlNodeClick: (
+    rowIndex: number,
+    buttonRef: RefObject<HTMLButtonElement | null>,
+  ) => void;
+  isExpanded: boolean;
+  controlName: string;
+}
+
+const ControlNodeInGrid = ({
+  rowIndex,
+  onControlNodeClick,
+  isExpanded,
+  controlName,
+}: ControlNodeInGridProps) => {
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const handleButtonClick = () => {
+    onControlNodeClick(rowIndex, buttonRef);
+  };
+
   return (
     <Menu>
       <MenuButton
+        ref={buttonRef}
         as={Button}
-        bg="white"
-        _expanded={{ bg: "orange.500", color: "white" }}
+        bg={isExpanded ? "orange.500" : "white"}
+        color={isExpanded ? "white" : "black"}
+        _hover={{ bg: "orange.400", color: "white" }}
+        _active={{ bg: "orange.500", color: "white" }}
         w="100%"
         h="100%"
         fontWeight="normal"
+        fontSize="xs"
         textAlign="left"
         boxShadow="base"
         px={3}
+        onClick={handleButtonClick}
       >
         <Flex w="100%" align="center" justify="space-between" gap={2}>
           <Box
             as="span"
+            flex="1"
             isTruncated
             whiteSpace="nowrap"
             overflow="hidden"
             textOverflow="ellipsis"
+            minWidth="0"
           >
-            Action with a long name
+            {controlName}
           </Box>
-          <ChevronDownIcon />
+          <Box flexShrink={0}>
+            <ChevronDownIcon
+              transform={isExpanded ? "rotate(180deg)" : "rotate(0deg)"}
+              transition="transform 0.2s"
+            />
+          </Box>
         </Flex>
       </MenuButton>
-      <MenuList>
-        <MenuItem>Download</MenuItem>
-        <MenuItem>Create a Copy</MenuItem>
-        <MenuItem>Mark as Draft</MenuItem>
-        <MenuItem>Delete</MenuItem>
-        <MenuItem>Attend a Workshop</MenuItem>
-      </MenuList>
     </Menu>
   );
 };
