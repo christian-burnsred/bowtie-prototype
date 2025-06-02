@@ -7,11 +7,23 @@ import { DemSpecific } from "./NodeBlocks/DemSpecific.tsx";
 import { AllScenariosEdges, SpecificScenariosEdges } from "./Nodes/Edges.tsx";
 import { ImpactNode, ScenarioNode, SupportFactorNode } from "./Nodes/Nodes.tsx";
 
-export const BowtieDiagram = () => {
+interface BowtieDiagramProps {
+  showEventPhase: boolean;
+  showControlDesignation: boolean;
+}
+
+export const BowtieDiagram = ({
+  showEventPhase,
+  showControlDesignation,
+}: BowtieDiagramProps) => {
   const scenarioIds = Array.from({ length: 6 }, (_, i) => `scenario-${i}`);
   const [selectedScenarioId, setSelectedScenarioId] = useState<string | null>(
     null,
   );
+
+  // TODO - introduce logic
+  console.log(showEventPhase);
+  console.log(showControlDesignation);
 
   const handleSelect = (id: string) => {
     setSelectedScenarioId((prev) => (prev === id ? null : id));

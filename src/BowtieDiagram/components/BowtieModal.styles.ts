@@ -11,22 +11,6 @@ export const modalHeadingSx: SystemStyleObject = {
   mb: 8,
 };
 
-export const switchSx: SystemStyleObject = {
-  fontSize: "sm",
-  mb: 0,
-  display: "flex",
-  alignItems: "center",
-  flexWrap: "wrap",
-  "& .chakra-form__label": {
-    fontSize: "xs",
-    mb: 0,
-    mr: 2,
-  },
-  "& .chakra-switch": {
-    mr: 6,
-  },
-};
-
 export const modalBodySx: SystemStyleObject = {
   bg: "gray.100",
   borderTop: "gray.200",
