@@ -19,11 +19,16 @@ export const accordionSx: SystemStyleObject = {
   },
 
   "& .chakra-accordion__button": {
-    bg: "gray.100",
+    // bg: "gray.100",
     mb: 1,
     borderRadius: "5px",
     fontSize: "sm",
     outline: "none",
+
+    _hover: {
+      bg: "orange.200",
+      color: "black",
+    },
 
     "&[aria-expanded='true']": {
       bg: "orange.400",

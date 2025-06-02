@@ -1,4 +1,4 @@
-import { Box, Icon, Select, Text } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Icon, Select, Text } from "@chakra-ui/react";
 import { MdOutlineDirectionsCar } from "react-icons/md";
 
 import {
@@ -42,16 +42,53 @@ interface ControlNodeProps {
   id: string;
   title: string;
   controlCount: number;
+  showEventPhase?: boolean;
+  timeZoneType: "preventative" | "mitigative";
 }
 
-export const ControlNode = ({ id, title, controlCount }: ControlNodeProps) => {
+export const ControlNode = ({
+  id,
+  title,
+  controlCount,
+  showEventPhase = false,
+  timeZoneType,
+}: ControlNodeProps) => {
   return (
     <Box id={id} sx={controlNodeSx}>
       <Text className="control-title">{title}</Text>
+      {showEventPhase ? (
+        timeZoneType == "preventative" ? (
+          <PreventitiveTimezone />
+        ) : (
+          <MitigativeTimezone />
+        )
+      ) : (
+        ""
+      )}
       <Box className="control-number-container">
         <Text className="control-number">{controlCount} controls</Text>
       </Box>
     </Box>
+  );
+};
+
+const PreventitiveTimezone = () => {
+  return (
+    <Grid w={"100%"} templateColumns="repeat(4, 1fr)" gap={0}>
+      <GridItem w="100%" h="2" bg="#a0aec0" />
+      <GridItem w="100%" h="2" bg="#f67b2f" />
+      <GridItem w="100%" h="2" bg="#d04d97" />
+      <GridItem w="100%" h="2" bg="#9f2995" />
+    </Grid>
+  );
+};
+
+const MitigativeTimezone = () => {
+  return (
+    <Grid w={"100%"} templateColumns="repeat(2, 1fr)" gap={0}>
+      <GridItem w="100%" h="2" bg="#742068" />
+      <GridItem w="100%" h="2" bg="#708096" />
+    </Grid>
   );
 };
 

@@ -18,16 +18,16 @@ export const scenarioNodeSx: SystemStyleObject = {
 export const controlNodeSx: SystemStyleObject = {
   width: "120px",
   maxHeight: "238px",
-  p: "8px",
   borderRadius: "5px",
   bg: "white",
   boxShadow: "0 8px 16px 0 rgba(160, 174, 192, 0.32)",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  justifyContent: "space-between",
+  position: "relative",
 
   "& .control-title": {
+    p: "8px",
     textAlign: "center",
     lineHeight: "normal",
     fontWeight: "bold",
@@ -40,6 +40,10 @@ export const controlNodeSx: SystemStyleObject = {
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
   },
 
   "& .control-number": {

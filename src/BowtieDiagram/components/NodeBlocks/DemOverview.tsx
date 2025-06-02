@@ -2,7 +2,12 @@ import { Box } from "@chakra-ui/react";
 
 import { ControlNode, DEMNode } from "../Nodes/Nodes.tsx";
 
-export const DemOverview = () => {
+interface DemOverviewmProps {
+  showEventPhase: boolean;
+}
+
+// Updated DemOverview component usage
+export const DemOverview = ({ showEventPhase }: DemOverviewmProps) => {
   return (
     <Box
       display={"flex"}
@@ -16,6 +21,8 @@ export const DemOverview = () => {
         id="preventative-control"
         title="Preventative controls"
         controlCount={24}
+        showEventPhase={showEventPhase}
+        timeZoneType="preventative"
       />
       <DEMNode
         id="dem-node"
@@ -30,6 +37,8 @@ export const DemOverview = () => {
         id={"mitigative-control"}
         title="Mitigative controls"
         controlCount={2}
+        showEventPhase={showEventPhase}
+        timeZoneType="mitigative"
       />
     </Box>
   );

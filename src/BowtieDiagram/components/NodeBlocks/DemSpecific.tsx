@@ -13,7 +13,11 @@ import { useXarrow } from "react-xarrows";
 import { accordionSx, demSpecificSx } from "./NodeBlock.styles.ts";
 import { DEMNodeConcise } from "../Nodes/Nodes.tsx";
 
-export const DemSpecific = () => {
+interface DemSpecificProps {
+  showControlDesignation: boolean;
+}
+
+export const DemSpecific = ({ showControlDesignation }: DemSpecificProps) => {
   const itemCount = 5;
   const accordionRef = useRef(null);
 
@@ -36,9 +40,14 @@ export const DemSpecific = () => {
     return () => observer.disconnect();
   }, [updateXarrow]);
 
+  const designationColours = ["#008981", "#00ab8a", "#2da2d7", "#234483"];
+
   const items = Array.from({ length: itemCount }, (_, i) => (
     <AccordionItem key={i} id={`specific-control-${i}`}>
-      <AccordionButton>
+      <AccordionButton
+        color={showControlDesignation ? "white" : "black"}
+        bg={showControlDesignation ? designationColours[i % 4] : "gray.100"}
+      >
         <Box as="span" flex="1" textAlign="left">
           Accordion Item #{i + 1}
         </Box>

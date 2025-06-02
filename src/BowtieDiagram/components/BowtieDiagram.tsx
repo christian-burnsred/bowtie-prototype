@@ -62,7 +62,11 @@ export const BowtieDiagram = ({
               justifyContent="space-between"
               alignItems="center"
             >
-              {selectedScenarioId ? <DemSpecific /> : <DemOverview />}
+              {selectedScenarioId ? (
+                <DemSpecific showControlDesignation={showControlDesignation} />
+              ) : (
+                <DemOverview showEventPhase={showEventPhase} />
+              )}
             </HStack>
           </Box>
 
