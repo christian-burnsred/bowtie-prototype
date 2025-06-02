@@ -11,7 +11,7 @@ export const demSpecificSx: SystemStyleObject = {
 
 export const accordionSx: SystemStyleObject = {
   px: "12px",
-  py: "20px",
+  py: "26px",
 
   "& .chakra-accordion__item": {
     mb: 1,

@@ -10,6 +10,7 @@ import {
 import { useEffect, useRef } from "react";
 import { useXarrow } from "react-xarrows";
 
+import { DemSpecificEventPhase } from "./DemSpecificEventPhase.tsx";
 import { accordionSx, demSpecificSx } from "./NodeBlock.styles.ts";
 import { DEMNodeConcise } from "../Nodes/Nodes.tsx";
 
@@ -42,6 +43,8 @@ export const DemSpecific = ({ showControlDesignation }: DemSpecificProps) => {
 
   const designationColours = ["#008981", "#00ab8a", "#2da2d7", "#234483"];
 
+  const hide = false;
+
   const items = Array.from({ length: itemCount }, (_, i) => (
     <AccordionItem key={i} id={`specific-control-${i}`}>
       <AccordionButton
@@ -70,13 +73,19 @@ export const DemSpecific = ({ showControlDesignation }: DemSpecificProps) => {
       >
         <DEMNodeConcise />
       </Box>
-      <Accordion ref={accordionRef} sx={accordionSx} allowMultiple>
-        {items}
-      </Accordion>
-      <HStack display="flex" justifyContent="space-between">
-        <Box id={"dem-specific-left"} w={"120px"}></Box>
-        <Box id={"dem-specific-right"} w={"120px"}></Box>
-      </HStack>
+      <DemSpecificEventPhase />
+
+      {hide && (
+        <>
+          <Accordion ref={accordionRef} sx={accordionSx} allowMultiple>
+            {items}
+          </Accordion>
+          <HStack display="flex" justifyContent="space-between">
+            <Box id={"dem-specific-left"} w={"120px"}></Box>
+            <Box id={"dem-specific-right"} w={"120px"}></Box>
+          </HStack>
+        </>
+      )}
     </Box>
   );
 };

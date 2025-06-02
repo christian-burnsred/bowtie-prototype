@@ -6,7 +6,6 @@ interface DemOverviewmProps {
   showEventPhase: boolean;
 }
 
-// Updated DemOverview component usage
 export const DemOverview = ({ showEventPhase }: DemOverviewmProps) => {
   return (
     <Box

@@ -90,11 +90,11 @@ export const BowtieDiagram = ({
 
           <Box flex={1} pl={"6"} />
         </Box>
-        {selectedScenarioId ? (
-          <SpecificScenariosEdges scenarioId={selectedScenarioId} />
-        ) : (
-          <AllScenariosEdges scenarioIds={scenarioIds} />
-        )}
+        {/*{selectedScenarioId ? (*/}
+        {/*  <SpecificScenariosEdges scenarioId={selectedScenarioId} />*/}
+        {/*) : (*/}
+        {/*  <AllScenariosEdges scenarioIds={scenarioIds} />*/}
+        {/*)}*/}
       </VStack>
     </Xwrapper>
   );
