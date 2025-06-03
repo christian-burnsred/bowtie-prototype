@@ -15,10 +15,14 @@ import { accordionSx, demSpecificSx } from "./NodeBlock.styles.ts";
 import { DEMNodeConcise } from "../Nodes/Nodes.tsx";
 
 interface DemSpecificProps {
+  showEventPhase: boolean;
   showControlDesignation: boolean;
 }
 
-export const DemSpecific = ({ showControlDesignation }: DemSpecificProps) => {
+export const DemSpecific = ({
+  showEventPhase,
+  showControlDesignation,
+}: DemSpecificProps) => {
   const itemCount = 5;
   const accordionRef = useRef(null);
 
@@ -42,8 +46,6 @@ export const DemSpecific = ({ showControlDesignation }: DemSpecificProps) => {
   }, [updateXarrow]);
 
   const designationColours = ["#008981", "#00ab8a", "#2da2d7", "#234483"];
-
-  const hide = false;
 
   const items = Array.from({ length: itemCount }, (_, i) => (
     <AccordionItem key={i} id={`specific-control-${i}`}>
@@ -73,19 +75,20 @@ export const DemSpecific = ({ showControlDesignation }: DemSpecificProps) => {
       >
         <DEMNodeConcise />
       </Box>
-      <DemSpecificEventPhase />
 
-      {hide && (
-        <>
-          <Accordion ref={accordionRef} sx={accordionSx} allowMultiple>
-            {items}
-          </Accordion>
-          <HStack display="flex" justifyContent="space-between">
-            <Box id={"dem-specific-left"} w={"120px"}></Box>
-            <Box id={"dem-specific-right"} w={"120px"}></Box>
-          </HStack>
-        </>
+      {showEventPhase ? (
+        <DemSpecificEventPhase
+          showControlDesignation={showControlDesignation}
+        />
+      ) : (
+        <Accordion ref={accordionRef} sx={accordionSx} allowMultiple>
+          {items}
+        </Accordion>
       )}
+      <HStack display="flex" justifyContent="space-between">
+        <Box id={"dem-specific-left"} w={"120px"}></Box>
+        <Box id={"dem-specific-right"} w={"120px"}></Box>
+      </HStack>
     </Box>
   );
 };

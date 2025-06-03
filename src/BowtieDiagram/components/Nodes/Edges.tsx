@@ -84,20 +84,22 @@ export const AllScenariosEdges = ({ scenarioIds }: AllScenariosEdgesProps) => {
 
 interface SpecificScenariosEdgesProps {
   scenarioId: string;
+  showEventPhase: boolean;
 }
 
 export const SpecificScenariosEdges = ({
   scenarioId,
+  showEventPhase,
 }: SpecificScenariosEdgesProps) => {
   return (
     <>
-      {Array.from({ length: 5 }).map((_, i) => (
+      {showEventPhase ? (
         <>
           <Xarrow
-            key={`scenario-to-control-${i}`}
+            key={`scenario-to-dem-specific`}
             start={scenarioId}
             startAnchor="right"
-            end={`accordion-button-specific-control-${i}`}
+            end={"dem-specific"}
             endAnchor="left"
             color="#01ab8b"
             strokeWidth={1}
@@ -109,8 +111,8 @@ export const SpecificScenariosEdges = ({
             tailColor="black"
           />
           <Xarrow
-            key={`control-${i}-to-impact`}
-            start={`accordion-button-specific-control-${i}`}
+            key={`dem-specific-to-impact`}
+            start={`dem-specific`}
             startAnchor="right"
             end={`impact-node`}
             endAnchor="left"
@@ -124,7 +126,42 @@ export const SpecificScenariosEdges = ({
             tailColor="black"
           />
         </>
-      ))}
+      ) : (
+        Array.from({ length: 5 }).map((_, i) => (
+          <>
+            <Xarrow
+              key={`scenario-to-control-${i}`}
+              start={scenarioId}
+              startAnchor="right"
+              end={`accordion-button-specific-control-${i}`}
+              endAnchor="left"
+              color="#01ab8b"
+              strokeWidth={1}
+              curveness={0.3}
+              showTail={true}
+              headShape="circle"
+              tailShape="circle"
+              headColor="black"
+              tailColor="black"
+            />
+            <Xarrow
+              key={`control-${i}-to-impact`}
+              start={`accordion-button-specific-control-${i}`}
+              startAnchor="right"
+              end={`impact-node`}
+              endAnchor="left"
+              color="#db4742"
+              strokeWidth={1}
+              curveness={0.3}
+              showTail={true}
+              headShape="circle"
+              tailShape="circle"
+              headColor="black"
+              tailColor="black"
+            />
+          </>
+        ))
+      )}
       <Xarrow
         key={`dem-specific-to-sf-left`}
         start={`dem-specific-left`}

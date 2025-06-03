@@ -63,7 +63,10 @@ export const BowtieDiagram = ({
               alignItems="center"
             >
               {selectedScenarioId ? (
-                <DemSpecific showControlDesignation={showControlDesignation} />
+                <DemSpecific
+                  showEventPhase={showEventPhase}
+                  showControlDesignation={showControlDesignation}
+                />
               ) : (
                 <DemOverview showEventPhase={showEventPhase} />
               )}
@@ -90,11 +93,14 @@ export const BowtieDiagram = ({
 
           <Box flex={1} pl={"6"} />
         </Box>
-        {/*{selectedScenarioId ? (*/}
-        {/*  <SpecificScenariosEdges scenarioId={selectedScenarioId} />*/}
-        {/*) : (*/}
-        {/*  <AllScenariosEdges scenarioIds={scenarioIds} />*/}
-        {/*)}*/}
+        {selectedScenarioId ? (
+          <SpecificScenariosEdges
+            scenarioId={selectedScenarioId}
+            showEventPhase={showEventPhase}
+          />
+        ) : (
+          <AllScenariosEdges scenarioIds={scenarioIds} />
+        )}
       </VStack>
     </Xwrapper>
   );

@@ -8,262 +8,370 @@ import {
   Menu,
   VStack,
 } from "@chakra-ui/react";
-import { type RefObject, useRef, useState } from "react";
+import { type JSX, useEffect, useRef, useState } from "react";
+import { useXarrow } from "react-xarrows";
 
-export const DemSpecificEventPhase = () => {
+import { ControlExpandedGridBox } from "./ControlExpandedGridBox.tsx";
+
+interface DemSpecificEventPhaseProps {
+  showControlDesignation: boolean;
+}
+
+export const DemSpecificEventPhase = ({
+  showControlDesignation,
+}: DemSpecificEventPhaseProps) => {
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
-  const [buttonPosition, setButtonPosition] = useState({
-    top: 0,
-    left: 0,
-    width: 0,
-  });
+  const gridContainerRef = useRef<HTMLDivElement>(null);
+  const updateXarrow = useXarrow();
 
-  const handleControlNodeClick = (
-    rowIndex: number,
-    buttonRef: RefObject<HTMLButtonElement | null>,
-  ) => {
+  const handleControlNodeClick = (rowIndex: number) => {
     if (expandedRow === rowIndex) {
       setExpandedRow(null);
     } else {
       setExpandedRow(rowIndex);
-      // Get button position for overlay positioning
-      if (buttonRef && buttonRef.current) {
-        const rect = buttonRef.current.getBoundingClientRect();
-        const containerRect = buttonRef.current
-          .closest("[data-container]")
-          ?.getBoundingClientRect() || { left: 0, top: 0 };
-        setButtonPosition({
-          top: rect.bottom - containerRect.top,
-          left: rect.left - containerRect.left,
-          width: rect.width,
-        });
-      }
     }
   };
 
+  // MutationObserver to update Xarrow when grid changes
+  useEffect(() => {
+    if (!gridContainerRef.current) return;
+
+    const observer = new MutationObserver(() => {
+      // Use requestAnimationFrame to avoid infinite loops
+      requestAnimationFrame(() => {
+        updateXarrow();
+      });
+    });
+
+    observer.observe(gridContainerRef.current, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["style", "class"],
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    // Use requestAnimationFrame to ensure DOM has updated
+    requestAnimationFrame(() => {
+      updateXarrow();
+    });
+  }, [expandedRow]);
+
   return (
-    <Box position="relative" pt={"26px"} w="100%" data-container>
+    <Box
+      position="relative"
+      pt={"26px"}
+      w="100%"
+      data-container
+      ref={gridContainerRef}
+    >
       <VStack spacing={1} w="100%">
-        <HStack spacing={1} w="100%">
-          <PrevenativeGrid
+        <HStack spacing={1} w="100%" align="start">
+          <ScenarioGrid
             expandedRow={expandedRow}
             onControlNodeClick={handleControlNodeClick}
-          />
-          <MitigativeGrid
-            expandedRow={expandedRow}
-            onControlNodeClick={handleControlNodeClick}
+            showControlDesignation={showControlDesignation}
           />
         </HStack>
       </VStack>
-
-      {expandedRow !== null && (
-        <Box
-          position="absolute"
-          top={`${buttonPosition.top + 5}px`}
-          w="100%"
-          h="300px"
-          border="2px solid"
-          borderColor="orange.500"
-          borderRadius="6px"
-          bg="white"
-          p={4}
-          boxShadow="lg"
-          zIndex={1000}
-        >
-          <Box fontSize="sm" fontWeight="bold" mb={2}>
-            Expanded Control Details - Row {expandedRow + 1}
-          </Box>
-          <Box fontSize="xs" color="gray.600">
-            This box appears when a control node is clicked and hovers below the
-            button like a dropdown.
-          </Box>
-        </Box>
-      )}
     </Box>
   );
 };
 
-interface PrevenativeGridProps {
+interface GridProps {
   expandedRow: number | null;
-  onControlNodeClick: (
-    rowIndex: number,
-    buttonRef: RefObject<HTMLButtonElement | null>,
-  ) => void;
+  onControlNodeClick: (rowIndex: number) => void;
+  showControlDesignation: boolean;
 }
 
-const PrevenativeGrid = ({
+type EmptyItem = { type: "empty" };
+export type ControlItem = {
+  type: "control";
+  rowIndex: number;
+  colSpan: number;
+  controlName: string;
+};
+
+export type GridRow = { rowIndex: number; items: GridItemType[] };
+
+type GridItemType = EmptyItem | ControlItem;
+
+const ScenarioGrid = ({
   expandedRow,
   onControlNodeClick,
-}: PrevenativeGridProps) => {
+  showControlDesignation,
+}: GridProps) => {
+  // Define the grid structure with row information
+  const gridRows: GridRow[] = [
+    {
+      rowIndex: 1,
+      items: [
+        { type: "empty" },
+        {
+          type: "control",
+          rowIndex: 1,
+          colSpan: 1,
+          controlName: "Travel motion lockout",
+        },
+        {
+          type: "control",
+          rowIndex: 2,
+          colSpan: 2,
+          controlName:
+            "Autonomous emergency braking (aeb) with pedestrian detection (front)",
+        },
+        { type: "empty" },
+        {
+          type: "control",
+          rowIndex: 14,
+          colSpan: 1,
+          controlName: "Emergency response route alert",
+        },
+      ],
+    },
+    {
+      rowIndex: 2,
+      items: [
+        { type: "empty" },
+        {
+          type: "control",
+          rowIndex: 3,
+          colSpan: 1,
+          controlName: "Travel motion lockout",
+        },
+        {
+          type: "control",
+          rowIndex: 4,
+          colSpan: 2,
+          controlName:
+            "Autonomous emergency braking (aeb) with pedestrian detection (front)",
+        },
+        { type: "empty" },
+        { type: "empty" },
+      ],
+    },
+    {
+      rowIndex: 3,
+      items: [
+        { type: "empty" },
+        {
+          type: "control",
+          rowIndex: 5,
+          colSpan: 2,
+          controlName: "Two-way radios and usage",
+        },
+        { type: "empty" },
+        { type: "empty" },
+        {
+          type: "control",
+          rowIndex: 15,
+          colSpan: 1,
+          controlName: "Two ways radio and usage",
+        },
+      ],
+    },
+    {
+      rowIndex: 4,
+      items: [
+        { type: "empty" },
+        {
+          type: "control",
+          rowIndex: 6,
+          colSpan: 2,
+          controlName: "Pedestrian proximity detection system (pds) alert",
+        },
+        { type: "empty" },
+        { type: "empty" },
+        { type: "empty" },
+      ],
+    },
+    {
+      rowIndex: 5,
+      items: [
+        { type: "empty" },
+        {
+          type: "control",
+          rowIndex: 7,
+          colSpan: 2,
+          controlName: "Reversing cameras",
+        },
+        { type: "empty" },
+        { type: "empty" },
+        { type: "empty" },
+      ],
+    },
+    {
+      rowIndex: 6,
+      items: [
+        { type: "empty" },
+        {
+          type: "control",
+          rowIndex: 8,
+          colSpan: 1,
+          controlName: "Reversing cameras",
+        },
+        { type: "empty" },
+        { type: "empty" },
+        { type: "empty" },
+        { type: "empty" },
+      ],
+    },
+    {
+      rowIndex: 7,
+      items: [
+        { type: "empty" },
+        {
+          type: "control",
+          rowIndex: 9,
+          colSpan: 1,
+          controlName: "Vehicle articulation lock",
+        },
+        {
+          type: "control",
+          rowIndex: 10,
+          colSpan: 1,
+          controlName: "Operator distraction and alertness system",
+        },
+        { type: "empty" },
+        { type: "empty" },
+        { type: "empty" },
+      ],
+    },
+    {
+      rowIndex: 8,
+      items: [
+        { type: "empty" },
+        {
+          type: "control",
+          rowIndex: 11,
+          colSpan: 1,
+          controlName: "Pedestrian separation by distance (10m)",
+        },
+        {
+          type: "control",
+          rowIndex: 12,
+          colSpan: 1,
+          controlName: "Moving off information system (mois)",
+        },
+        { type: "empty" },
+        { type: "empty" },
+        { type: "empty" },
+      ],
+    },
+    {
+      rowIndex: 9,
+      items: [
+        { type: "empty" },
+        {
+          type: "control",
+          rowIndex: 13,
+          colSpan: 2,
+          controlName: "On-vehicle mirrors",
+        },
+        { type: "empty" },
+        { type: "empty" },
+        { type: "empty" },
+      ],
+    },
+    {
+      rowIndex: 10,
+      items: [
+        { type: "empty" },
+        { type: "empty" },
+        { type: "empty" },
+        { type: "empty" },
+        { type: "empty" },
+        { type: "empty" },
+      ],
+    },
+    {
+      rowIndex: 11,
+      items: [
+        { type: "empty" },
+        { type: "empty" },
+        { type: "empty" },
+        { type: "empty" },
+        { type: "empty" },
+        { type: "empty" },
+      ],
+    },
+  ];
+
+  const renderGridItems = () => {
+    const items: JSX.Element[] = [];
+
+    gridRows.forEach((row) => {
+      // Render regular row items
+      row.items.forEach((item, itemIndex) => {
+        if (item.type === "empty") {
+          items.push(
+            <GridItem
+              key={`${row.rowIndex}-${itemIndex}`}
+              borderRadius="6px"
+              w="100%"
+              h="48px"
+              bg="gray.100"
+            />,
+          );
+        } else if (item.type === "control") {
+          items.push(
+            <GridItem
+              key={`${row.rowIndex}-${itemIndex}`}
+              colSpan={item.colSpan}
+              w="100%"
+              h="48px"
+            >
+              <ControlNodeInGrid
+                showControlDesignation={showControlDesignation}
+                rowIndex={item.rowIndex}
+                onControlNodeClick={onControlNodeClick}
+                isExpanded={expandedRow === item.rowIndex}
+                controlName={item.controlName}
+              />
+            </GridItem>,
+          );
+        }
+      });
+
+      // Check if any control in this row is expanded
+      const expandedControlInRow = row.items.find(
+        (item): item is ControlItem =>
+          item.type === "control" && expandedRow === item.rowIndex,
+      );
+
+      if (expandedControlInRow) {
+        items.push(
+          <ControlExpandedGridBox
+            row={row}
+            expandedControlInRow={expandedControlInRow}
+            onClose={onControlNodeClick}
+          />,
+        );
+      }
+    });
+
+    return items;
+  };
+
   return (
     <VStack flex={4}>
-      <PrevenativeGridHeader />
-      <Grid w="100%" templateColumns="repeat(4, minmax(0, 1fr))" gap={1}>
-        {/* Row 1 */}
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem colSpan={1} w="100%" h="48px">
-          <ControlNodeInGrid
-            rowIndex={1}
-            onControlNodeClick={onControlNodeClick}
-            isExpanded={expandedRow === 1}
-            controlName={"Travel motion lockout"}
-          />
-        </GridItem>
-        <GridItem colSpan={2} w="100%" h="48px">
-          <ControlNodeInGrid
-            rowIndex={2}
-            onControlNodeClick={onControlNodeClick}
-            isExpanded={expandedRow === 2}
-            controlName={
-              "Autonomous emergency braking (aeb) with pedestrian detection (front)"
-            }
-          />
-        </GridItem>
-
-        {/* Row 2 */}
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem colSpan={1} w="100%" h="48px">
-          <ControlNodeInGrid
-            rowIndex={3}
-            onControlNodeClick={onControlNodeClick}
-            isExpanded={expandedRow === 3}
-            controlName={"Travel motion lockout"}
-          />
-        </GridItem>
-        <GridItem colSpan={2} w="100%" h="48px">
-          <ControlNodeInGrid
-            rowIndex={4}
-            onControlNodeClick={onControlNodeClick}
-            isExpanded={expandedRow === 4}
-            controlName={
-              "Autonomous emergency braking (aeb) with pedestrian detection (front)"
-            }
-          />
-        </GridItem>
-
-        {/* Row 3 */}
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem colSpan={2} w="100%" h="48px">
-          <ControlNodeInGrid
-            rowIndex={5}
-            onControlNodeClick={onControlNodeClick}
-            isExpanded={expandedRow === 5}
-            controlName={"Two-way radios and usage"}
-          />
-        </GridItem>
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-
-        {/* Row 4 */}
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem colSpan={2} w="100%" h="48px">
-          <ControlNodeInGrid
-            rowIndex={6}
-            onControlNodeClick={onControlNodeClick}
-            isExpanded={expandedRow === 6}
-            controlName={"Pedestrian proximity detection system (pds) alert"}
-          />
-        </GridItem>
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-
-        {/* Row 5 */}
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem colSpan={2} w="100%" h="48px">
-          <ControlNodeInGrid
-            rowIndex={7}
-            onControlNodeClick={onControlNodeClick}
-            isExpanded={expandedRow === 7}
-            controlName={"Reversing cameras"}
-          />
-        </GridItem>
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-
-        {/* Row 6 */}
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem colSpan={1} w="100%" h="48px">
-          <ControlNodeInGrid
-            rowIndex={8}
-            onControlNodeClick={onControlNodeClick}
-            isExpanded={expandedRow === 8}
-            controlName={"Reversing cameras"}
-          />
-        </GridItem>
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-
-        {/* Row 7 */}
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem colSpan={1} w="100%" h="48px">
-          <ControlNodeInGrid
-            rowIndex={9}
-            onControlNodeClick={onControlNodeClick}
-            isExpanded={expandedRow === 9}
-            controlName={"Vehicle articulation lock"}
-          />
-        </GridItem>
-        <GridItem colSpan={1} w="100%" h="48px">
-          <ControlNodeInGrid
-            rowIndex={10}
-            onControlNodeClick={onControlNodeClick}
-            isExpanded={expandedRow === 10}
-            controlName={"Operator distraction and alertness system"}
-          />
-        </GridItem>
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-
-        {/* Row 8 */}
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem colSpan={1} w="100%" h="48px">
-          <ControlNodeInGrid
-            rowIndex={11}
-            onControlNodeClick={onControlNodeClick}
-            isExpanded={expandedRow === 11}
-            controlName={"Pedestrian separation by distance (10m)"}
-          />
-        </GridItem>
-        <GridItem colSpan={1} w="100%" h="48px">
-          <ControlNodeInGrid
-            rowIndex={12}
-            onControlNodeClick={onControlNodeClick}
-            isExpanded={expandedRow === 12}
-            controlName={"Moving off information system (mois)"}
-          />
-        </GridItem>
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-
-        {/* Row 9 */}
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem colSpan={2} w="100%" h="48px">
-          <ControlNodeInGrid
-            rowIndex={13}
-            onControlNodeClick={onControlNodeClick}
-            isExpanded={expandedRow === 13}
-            controlName={"On-vehicle mirrors"}
-          />
-        </GridItem>
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-
-        {/* Row 10 */}
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-
-        {/* Row 11 */}
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
+      <GridHeader />
+      <Grid w="100%" templateColumns="repeat(6, minmax(0, 1fr))" gap={1}>
+        {renderGridItems()}
       </Grid>
     </VStack>
   );
 };
 
-const PrevenativeGridHeader = () => {
+const GridHeader = () => {
   return (
     <Grid
       w="100%"
       templateRows="repeat(1, 1fr)"
-      templateColumns="repeat(4, 1fr)"
+      templateColumns="repeat(6, 1fr)"
       columnGap={1}
     >
       <GridItem
@@ -277,85 +385,7 @@ const PrevenativeGridHeader = () => {
       >
         Preventative controls
       </GridItem>
-      <GridItem w="100%" h="2" bg="#a0aec0" />
-      <GridItem w="100%" h="2" bg="#f67b2f" />
-      <GridItem w="100%" h="2" bg="#d04d97" />
-      <GridItem w="100%" h="2" bg="#9f2995" />
-    </Grid>
-  );
-};
 
-const MitigativeGrid = ({
-  expandedRow,
-  onControlNodeClick,
-}: PrevenativeGridProps) => {
-  return (
-    <VStack flex={2}>
-      <MitigativeGridHeader />
-      <Grid w="100%" templateColumns="repeat(2, minmax(0, 1fr))" gap={1}>
-        {/* Row 1 */}
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem w="100%" h="48px">
-          <ControlNodeInGrid
-            rowIndex={14}
-            onControlNodeClick={onControlNodeClick}
-            isExpanded={expandedRow === 14}
-            controlName={"Emergency response route alert"}
-          />
-        </GridItem>
-
-        {/* Row 2 */}
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-
-        {/* Row 3 */}
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem w="100%" h="48px">
-          <ControlNodeInGrid
-            rowIndex={15}
-            onControlNodeClick={onControlNodeClick}
-            isExpanded={expandedRow === 15}
-            controlName={"Two ways radio and usage"}
-          />
-        </GridItem>
-
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-        <GridItem borderRadius="6px" w="100%" h="48px" bg="gray.100" />
-      </Grid>
-    </VStack>
-  );
-};
-
-const MitigativeGridHeader = () => {
-  return (
-    <Grid
-      w="100%"
-      flex={2}
-      templateRows="repeat(1, 1fr)"
-      templateColumns="repeat(2, 1fr)"
-      columnGap={1}
-    >
       <GridItem
         colSpan={2}
         h="48px"
@@ -367,6 +397,10 @@ const MitigativeGridHeader = () => {
       >
         Mitigative controls
       </GridItem>
+      <GridItem w="100%" h="2" bg="#a0aec0" />
+      <GridItem w="100%" h="2" bg="#f67b2f" />
+      <GridItem w="100%" h="2" bg="#d04d97" />
+      <GridItem w="100%" h="2" bg="#9f2995" />
       <GridItem w="100%" h="2" bg="#742068" />
       <GridItem w="100%" h="2" bg="#708096" />
     </Grid>
@@ -375,12 +409,10 @@ const MitigativeGridHeader = () => {
 
 interface ControlNodeInGridProps {
   rowIndex: number;
-  onControlNodeClick: (
-    rowIndex: number,
-    buttonRef: RefObject<HTMLButtonElement | null>,
-  ) => void;
+  onControlNodeClick: (rowIndex: number) => void;
   isExpanded: boolean;
   controlName: string;
+  showControlDesignation: boolean;
 }
 
 const ControlNodeInGrid = ({
@@ -388,20 +420,31 @@ const ControlNodeInGrid = ({
   onControlNodeClick,
   isExpanded,
   controlName,
+  showControlDesignation,
 }: ControlNodeInGridProps) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   const handleButtonClick = () => {
-    onControlNodeClick(rowIndex, buttonRef);
+    onControlNodeClick(rowIndex);
   };
+
+  const designationColours = ["#008981", "#00ab8a", "#2da2d7", "#234483"];
 
   return (
     <Menu>
       <MenuButton
         ref={buttonRef}
         as={Button}
-        bg={isExpanded ? "orange.500" : "white"}
-        color={isExpanded ? "white" : "black"}
+        bg={
+          isExpanded
+            ? "orange.500"
+            : showControlDesignation
+              ? designationColours[rowIndex % 4]
+              : "white"
+        }
+        color={
+          isExpanded ? "white" : showControlDesignation ? "white" : "black"
+        }
         _hover={{ bg: "orange.400", color: "white" }}
         _active={{ bg: "orange.500", color: "white" }}
         w="100%"

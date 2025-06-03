@@ -19,7 +19,6 @@ export const accordionSx: SystemStyleObject = {
   },
 
   "& .chakra-accordion__button": {
-    // bg: "gray.100",
     mb: 1,
     borderRadius: "5px",
     fontSize: "sm",
@@ -39,5 +38,43 @@ export const accordionSx: SystemStyleObject = {
   "& .chakra-accordion__panel": {
     border: "2px solid orange",
     fontSize: "sm",
+  },
+};
+
+export const controlExpandedGridBoxSx: SystemStyleObject = {
+  w: "100%",
+  // h: "300px",
+  border: "2px solid",
+  borderColor: "orange.500",
+  borderRadius: "6px",
+  bg: "white",
+  p: 4,
+  boxShadow: "lg",
+
+  "& .control-expanded-column-container": {
+    height: "100%",
+    display: "flex",
+    flex: 1,
+    flexDirection: "column",
+  },
+
+  "& .control-expanded-header": {
+    fontWeight: "bold",
+    mb: 4,
+    alignItems: "center",
+    color: "gray.500",
+  },
+
+  "& .control-expanded-subheader": {
+    fontWeight: "bold",
+    fontSize: "xs",
+    lineHeight: "normal",
+    mb: 2,
+  },
+
+  "& .control-expanded-text": {
+    fontSize: "xs",
+    lineHeight: "normal",
+    mb: 4,
   },
 };
