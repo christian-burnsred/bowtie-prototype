@@ -127,7 +127,7 @@ export const SpecificScenariosEdges = ({
           />
         </>
       ) : (
-        Array.from({ length: 5 }).map((_, i) => (
+        Array.from({ length: 13 }).map((_, i) => (
           <>
             <Xarrow
               key={`scenario-to-control-${i}`}

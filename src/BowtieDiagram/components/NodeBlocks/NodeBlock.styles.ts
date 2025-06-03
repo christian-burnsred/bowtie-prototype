@@ -43,14 +43,15 @@ export const accordionSx: SystemStyleObject = {
 
 export const controlExpandedGridBoxSx: SystemStyleObject = {
   w: "100%",
-  // h: "300px",
   border: "2px solid",
   borderColor: "orange.500",
   borderRadius: "6px",
   bg: "white",
   p: 4,
   boxShadow: "lg",
+};
 
+export const controlExpandedGridBoxContentSx: SystemStyleObject = {
   "& .control-expanded-column-container": {
     height: "100%",
     display: "flex",
