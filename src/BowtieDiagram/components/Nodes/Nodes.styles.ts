@@ -156,16 +156,18 @@ export const ImpactNodeSx: SystemStyleObject = {
 
 export const SupportFactorNodeSx: SystemStyleObject = {
   width: "100%",
-  height: "80px",
   bg: "white",
-  p: "8px",
+  p: "26px",
   borderRadius: "5px",
   boxShadow: "0 8px 16px 0 rgba(160, 174, 192, 0.32)",
   fontSize: "sm",
-  alignContent: "center",
   justifyItems: "center",
 
   "& .support-factor-heading": {
     fontWeight: "bold",
+  },
+
+  "& .support-factor-list-items": {
+    mt: 4,
   },
 };

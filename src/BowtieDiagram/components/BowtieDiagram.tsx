@@ -20,10 +20,9 @@ export const BowtieDiagram = ({
   const [selectedScenarioId, setSelectedScenarioId] = useState<string | null>(
     null,
   );
-
-  // TODO - introduce logic
-  console.log(showEventPhase);
-  console.log(showControlDesignation);
+  const [selectedSupportFactor, setSelectedSupportFactor] = useState<
+    string | null
+  >(null);
 
   const handleSelect = (id: string) => {
     setSelectedScenarioId((prev) => (prev === id ? null : id));
@@ -66,6 +65,7 @@ export const BowtieDiagram = ({
                 <DemSpecific
                   showEventPhase={showEventPhase}
                   showControlDesignation={showControlDesignation}
+                  selectedSupportFactor={selectedSupportFactor}
                 />
               ) : (
                 <DemOverview showEventPhase={showEventPhase} />
@@ -88,7 +88,16 @@ export const BowtieDiagram = ({
           <Box flex={1} pr={"6"} />
           {/*  Support Factors */}
           <Box flex={2} p={"6"}>
-            <SupportFactorNode id={"support-factor-node"} />
+            <SupportFactorNode
+              id="support-factor-node"
+              selectedScenario={selectedScenarioId}
+              selectedSupportFactor={selectedSupportFactor}
+              onSelectSupportFactor={(factor) =>
+                setSelectedSupportFactor((prev) =>
+                  prev === factor ? null : factor,
+                )
+              }
+            />
           </Box>
 
           <Box flex={1} pl={"6"} />

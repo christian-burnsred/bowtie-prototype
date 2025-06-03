@@ -17,11 +17,13 @@ import { DEMNodeConcise } from "../Nodes/Nodes.tsx";
 interface DemSpecificProps {
   showEventPhase: boolean;
   showControlDesignation: boolean;
+  selectedSupportFactor: string | null;
 }
 
 export const DemSpecific = ({
   showEventPhase,
   showControlDesignation,
+  selectedSupportFactor,
 }: DemSpecificProps) => {
   const itemCount = 5;
   const accordionRef = useRef(null);
@@ -50,8 +52,19 @@ export const DemSpecific = ({
   const items = Array.from({ length: itemCount }, (_, i) => (
     <AccordionItem key={i} id={`specific-control-${i}`}>
       <AccordionButton
-        color={showControlDesignation ? "white" : "black"}
-        bg={showControlDesignation ? designationColours[i % 4] : "gray.100"}
+        color={
+          showControlDesignation ||
+          (selectedSupportFactor && selectedSupportFactor.length % i == 3)
+            ? "white"
+            : "black"
+        }
+        bg={
+          selectedSupportFactor && selectedSupportFactor.length % i == 3
+            ? "orange.500"
+            : showControlDesignation
+              ? designationColours[i % 4]
+              : "gray.100"
+        }
       >
         <Box as="span" flex="1" textAlign="left">
           Accordion Item #{i + 1}
@@ -79,6 +92,7 @@ export const DemSpecific = ({
       {showEventPhase ? (
         <DemSpecificEventPhase
           showControlDesignation={showControlDesignation}
+          selectedSupportFactor={selectedSupportFactor}
         />
       ) : (
         <Accordion ref={accordionRef} sx={accordionSx} allowMultiple>

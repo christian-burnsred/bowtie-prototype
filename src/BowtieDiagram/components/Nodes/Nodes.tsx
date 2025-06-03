@@ -1,4 +1,14 @@
-import { Box, Grid, GridItem, Icon, Select, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Grid,
+  GridItem,
+  Icon,
+  ListItem,
+  Select,
+  SimpleGrid,
+  Text,
+  UnorderedList,
+} from "@chakra-ui/react";
 import { MdOutlineDirectionsCar } from "react-icons/md";
 
 import {
@@ -149,12 +159,91 @@ export const ImpactNode = ({ id }: ImpactNodeProps) => {
 
 interface SupportFactorNodeProps {
   id: string;
+  selectedScenario: string | null;
+  selectedSupportFactor: string | null;
+  onSelectSupportFactor: (value: string) => void;
 }
 
-export const SupportFactorNode = ({ id }: SupportFactorNodeProps) => {
+const supportFactors = [
+  "Maintenance system",
+  "Training",
+  "Equipment compliance system",
+  "Operation monitoring process",
+  "Emergency response plan",
+  "Fatigue management plan",
+  "Communication system",
+  "Operating procedure - vehicles near open edges",
+  "Training - edge detection",
+  "Training - heavy vehicle visibility",
+  "Health screening",
+  "Traffic management plan",
+];
+
+export const SupportFactorNode = ({
+  id,
+  selectedScenario,
+  selectedSupportFactor,
+  onSelectSupportFactor,
+}: SupportFactorNodeProps) => {
   return (
     <Box id={id} sx={SupportFactorNodeSx}>
-      <Text className="support-factor-heading">Support factors</Text>
+      <Text className="support-factor-heading">
+        Support factors {selectedScenario && "(12)"}
+      </Text>
+
+      {selectedScenario && (
+        <>
+          <Text color={"gray.500"}>
+            Select a support factor to see the linked controls highlight
+          </Text>
+          <SimpleGrid
+            className="support-factor-list-items"
+            spacing={4}
+            columns={2}
+          >
+            {Array.from({ length: 2 }, (_, col) => (
+              <UnorderedList key={col}>
+                {supportFactors
+                  .filter((_, i) => i % 2 === col)
+                  .map((factor) => (
+                    <SelectableListItem
+                      key={factor}
+                      text={factor}
+                      isSelected={selectedSupportFactor === factor}
+                      onSelect={() => onSelectSupportFactor(factor)}
+                    />
+                  ))}
+              </UnorderedList>
+            ))}
+          </SimpleGrid>
+        </>
+      )}
     </Box>
   );
 };
+
+interface SelectableListItemProps {
+  text: string;
+  isSelected: boolean;
+  onSelect: () => void;
+}
+
+const SelectableListItem = ({
+  text,
+  isSelected,
+  onSelect,
+}: SelectableListItemProps) => (
+  <ListItem
+    onClick={onSelect}
+    cursor="pointer"
+    px={2}
+    py={1}
+    borderRadius="md"
+    color={isSelected ? "orange.500" : "black"}
+    _hover={{
+      color: "orange.300",
+    }}
+  >
+    {text}
+  </ListItem>
+);

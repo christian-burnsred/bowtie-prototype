@@ -15,10 +15,12 @@ import { ControlExpandedGridBox } from "./ControlExpandedGridBox.tsx";
 
 interface DemSpecificEventPhaseProps {
   showControlDesignation: boolean;
+  selectedSupportFactor: string | null;
 }
 
 export const DemSpecificEventPhase = ({
   showControlDesignation,
+  selectedSupportFactor,
 }: DemSpecificEventPhaseProps) => {
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const gridContainerRef = useRef<HTMLDivElement>(null);
@@ -74,6 +76,7 @@ export const DemSpecificEventPhase = ({
             expandedRow={expandedRow}
             onControlNodeClick={handleControlNodeClick}
             showControlDesignation={showControlDesignation}
+            selectedSupportFactor={selectedSupportFactor}
           />
         </HStack>
       </VStack>
@@ -85,6 +88,7 @@ interface GridProps {
   expandedRow: number | null;
   onControlNodeClick: (rowIndex: number) => void;
   showControlDesignation: boolean;
+  selectedSupportFactor: string | null;
 }
 
 type EmptyItem = { type: "empty" };
@@ -103,6 +107,7 @@ const ScenarioGrid = ({
   expandedRow,
   onControlNodeClick,
   showControlDesignation,
+  selectedSupportFactor,
 }: GridProps) => {
   // Define the grid structure with row information
   const gridRows: GridRow[] = [
@@ -330,6 +335,7 @@ const ScenarioGrid = ({
                 onControlNodeClick={onControlNodeClick}
                 isExpanded={expandedRow === item.rowIndex}
                 controlName={item.controlName}
+                selectedSupportFactor={selectedSupportFactor}
               />
             </GridItem>,
           );
@@ -413,6 +419,7 @@ interface ControlNodeInGridProps {
   isExpanded: boolean;
   controlName: string;
   showControlDesignation: boolean;
+  selectedSupportFactor: string | null;
 }
 
 const ControlNodeInGrid = ({
@@ -421,6 +428,7 @@ const ControlNodeInGrid = ({
   isExpanded,
   controlName,
   showControlDesignation,
+  selectedSupportFactor,
 }: ControlNodeInGridProps) => {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
@@ -436,14 +444,22 @@ const ControlNodeInGrid = ({
         ref={buttonRef}
         as={Button}
         bg={
-          isExpanded
+          isExpanded ||
+          (selectedSupportFactor &&
+            selectedSupportFactor.length % rowIndex == 3)
             ? "orange.500"
             : showControlDesignation
               ? designationColours[rowIndex % 4]
               : "white"
         }
         color={
-          isExpanded ? "white" : showControlDesignation ? "white" : "black"
+          isExpanded ||
+          (selectedSupportFactor &&
+            selectedSupportFactor.length % rowIndex == 3)
+            ? "white"
+            : showControlDesignation
+              ? "white"
+              : "black"
         }
         _hover={{ bg: "orange.400", color: "white" }}
         _active={{ bg: "orange.500", color: "white" }}
