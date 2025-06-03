@@ -8,8 +8,7 @@ import {
   Menu,
   VStack,
 } from "@chakra-ui/react";
-import { type JSX, useEffect, useRef, useState } from "react";
-import { useXarrow } from "react-xarrows";
+import { type JSX, useRef, useState } from "react";
 
 import { ControlExpandedGridBox } from "./ControlExpandedGridBox.tsx";
 
@@ -24,7 +23,6 @@ export const DemSpecificEventPhase = ({
 }: DemSpecificEventPhaseProps) => {
   const [expandedRow, setExpandedRow] = useState<number | null>(null);
   const gridContainerRef = useRef<HTMLDivElement>(null);
-  const updateXarrow = useXarrow();
 
   const handleControlNodeClick = (rowIndex: number) => {
     if (expandedRow === rowIndex) {
@@ -33,34 +31,6 @@ export const DemSpecificEventPhase = ({
       setExpandedRow(rowIndex);
     }
   };
-
-  // MutationObserver to update Xarrow when grid changes
-  useEffect(() => {
-    if (!gridContainerRef.current) return;
-
-    const observer = new MutationObserver(() => {
-      // Use requestAnimationFrame to avoid infinite loops
-      requestAnimationFrame(() => {
-        updateXarrow();
-      });
-    });
-
-    observer.observe(gridContainerRef.current, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["style", "class"],
-    });
-
-    return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    // Use requestAnimationFrame to ensure DOM has updated
-    requestAnimationFrame(() => {
-      updateXarrow();
-    });
-  }, [expandedRow]);
 
   return (
     <Box

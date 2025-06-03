@@ -7,8 +7,7 @@ import {
   Box,
   HStack,
 } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
-import { useXarrow } from "react-xarrows";
+import { useRef, useState } from "react";
 
 import { ControlContent } from "./ControlExpandedGridBox.tsx";
 import { DemSpecificEventPhase } from "./DemSpecificEventPhase.tsx";
@@ -28,25 +27,6 @@ export const DemSpecific = ({
 }: DemSpecificProps) => {
   const accordionRef = useRef(null);
   const [expandedIndices, setExpandedIndices] = useState<number[]>([]);
-
-  const updateXarrow = useXarrow();
-
-  useEffect(() => {
-    if (!accordionRef.current) return;
-
-    const observer = new MutationObserver(() => {
-      updateXarrow();
-    });
-
-    observer.observe(accordionRef.current, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ["style", "class"],
-    });
-
-    return () => observer.disconnect();
-  }, [updateXarrow]);
 
   const designationColours = ["#008981", "#00ab8a", "#2da2d7", "#234483"];
   const controls = [

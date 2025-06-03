@@ -1,6 +1,6 @@
 import { Box, HStack, VStack } from "@chakra-ui/react";
-import { useState } from "react";
-import { Xwrapper } from "react-xarrows";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { Xwrapper, useXarrow } from "react-xarrows";
 
 import { DemOverview } from "./NodeBlocks/DemOverview.tsx";
 import { DemSpecific } from "./NodeBlocks/DemSpecific.tsx";
@@ -24,6 +24,38 @@ export const BowtieDiagram = ({
     string | null
   >(null);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+  const updateXarrowFromHook = useXarrow();
+
+  const updateXarrow = useCallback(() => {
+    updateXarrowFromHook();
+  }, [updateXarrowFromHook]);
+
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const observer = new MutationObserver(() => {
+      updateXarrow();
+    });
+
+    observer.observe(containerRef.current, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["style", "class"],
+    });
+
+    return () => observer.disconnect();
+  }, [updateXarrow]);
+
+  // Initial update after mount
+  useEffect(() => {
+    const timer = requestAnimationFrame(() => {
+      updateXarrow();
+    });
+    return () => cancelAnimationFrame(timer);
+  }, [updateXarrow]);
+
   const handleSelect = (id: string) => {
     setSelectedScenarioId((prev) => (prev === id ? null : id));
   };
@@ -38,7 +70,7 @@ export const BowtieDiagram = ({
 
   return (
     <Xwrapper>
-      <VStack spacing={0} h={"100%"} w={"100%"}>
+      <VStack ref={containerRef} spacing={0} h={"100%"} w={"100%"}>
         <Box display={"flex"} h={"100%"} w={"100%"}>
           {/* Scenarios */}
           <Box flex={1} display="flex" flexDirection="column" pr="6" pt={6}>
