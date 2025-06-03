@@ -53,7 +53,6 @@ export const DemSpecific = ({
     "Travel motion lockout",
     "Autonomous emergency braking (aeb) with pedestrian detection (front)",
     "Emergency response route alert",
-    "Travel motion lockout",
     "Autonomous emergency braking (aeb) with pedestrian detection (front)",
     "Two-way radios and usage",
     "Pedestrian proximity detection system (pds) alert",

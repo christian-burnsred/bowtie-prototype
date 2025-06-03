@@ -16,7 +16,7 @@ export const BowtieDiagram = ({
   showEventPhase,
   showControlDesignation,
 }: BowtieDiagramProps) => {
-  const scenarioIds = Array.from({ length: 6 }, (_, i) => `scenario-${i}`);
+  const scenarioIds = Array.from({ length: 5 }, (_, i) => `scenario-${i}`);
   const [selectedScenarioId, setSelectedScenarioId] = useState<string | null>(
     null,
   );
@@ -28,24 +28,26 @@ export const BowtieDiagram = ({
     setSelectedScenarioId((prev) => (prev === id ? null : id));
   };
 
+  const scenarios = [
+    "Vehicle in control contacts person involved in the task",
+    "Vehicle in control contacts person not involved in the task",
+    "Vehicle not in control/moves unexpectedly contacting person including rollaway",
+    "Person in footprint of vehicle including rollaway",
+    "Person boarding/alighting vehicle including rollaway",
+  ];
+
   return (
     <Xwrapper>
       <VStack spacing={0} h={"100%"} w={"100%"}>
         <Box display={"flex"} h={"100%"} w={"100%"}>
           {/* Scenarios */}
-          <Box
-            flex={1}
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            pr="6"
-          >
+          <Box flex={1} display="flex" flexDirection="column" pr="6" pt={6}>
             <VStack w="100%" spacing={2}>
-              {scenarioIds.map((id) => (
+              {scenarioIds.map((id, i) => (
                 <ScenarioNode
                   key={id}
                   id={id}
-                  content={`Scenario ${id}`}
+                  content={scenarios[i]}
                   isSelected={selectedScenarioId === id}
                   onSelect={handleSelect}
                 />
@@ -74,13 +76,7 @@ export const BowtieDiagram = ({
           </Box>
 
           {/*  Impact */}
-          <Box
-            flex={1}
-            display="flex"
-            flexDirection="column"
-            justifyContent="center"
-            pl="6"
-          >
+          <Box flex={1} display="flex" flexDirection="column" pt={119} pl="6">
             <ImpactNode id="impact-node" />
           </Box>
         </Box>
