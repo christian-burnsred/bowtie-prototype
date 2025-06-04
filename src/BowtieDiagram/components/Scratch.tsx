@@ -3,39 +3,32 @@ import { useState } from "react";
 
 const MorphingBoxes = () => {
   const [isMorphed, setIsMorphed] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  const handleMorph = () => {
+    setIsMorphed((prev) => {
+      // Hide overlay when reversing
+      if (prev) setShowOverlay(false);
+      return !prev;
+    });
+  };
 
   return (
-    <Box p={8} bg="gray.100" minH="100vh">
-      <Box maxW="4xl" mx="auto">
-        <Button
-          mb={6}
-          px={6}
-          py={3}
-          bg="blue.500"
-          color="white"
-          borderRadius="lg"
-          _hover={{ bg: "blue.600" }}
-          onClick={() => setIsMorphed((prev) => !prev)}
-        >
+    <Box bg="gray.100" minH="100vh">
+      <Box maxW="4xl" p="auto">
+        <Button onClick={handleMorph} colorScheme="blue" variant="solid" mb={6}>
           {isMorphed ? "Split Boxes" : "Fuse Boxes"}
         </Button>
 
         {/* Main Morphing Area */}
-        <Box
-          w="100%"
-          h="24rem"
-          bg="white"
-          borderRadius="lg"
-          boxShadow="lg"
-          p={4}
-          overflow="hidden"
-        >
+        <Box w="100%" h="300px" bg="white" borderRadius="lg" boxShadow="lg">
           <Flex
             w="100%"
             h="100%"
             align="center"
             justify="space-between"
             position="relative"
+            bg={"orange.100"}
           >
             {/* Left Box */}
             <Box
@@ -52,12 +45,50 @@ const MorphingBoxes = () => {
               sx={{
                 width: isMorphed ? "100%" : "20%",
                 height: "100%",
-                zIndex: 1,
                 transitionProperty: "all",
+              }}
+              onTransitionEnd={() => {
+                if (isMorphed) setShowOverlay(true);
               }}
             >
               <Text transition="opacity 0.3s" opacity={isMorphed ? 0 : 1}>
                 Box 1
+              </Text>
+            </Box>
+
+            {/* DEM Node */}
+            <Box
+              bg="yellowgreen"
+              borderRadius="lg"
+              boxShadow="md"
+              color="white"
+              fontWeight="bold"
+              fontSize="xl"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              position="absolute"
+              transition="all 1s ease-in-out"
+              sx={{
+                width: isMorphed ? "100px" : "150px",
+                height: isMorphed ? "100px" : "150px",
+                // When not morphed: position in center of flex container
+                top: isMorphed ? "0" : "50%",
+                left: isMorphed ? "50%" : "50%",
+                transform: isMorphed
+                  ? "translate(-50%, -50%)"
+                  : "translate(-50%, -50%)",
+                zIndex: 2,
+                transitionProperty: "all",
+                transitionDuration: "0.5s",
+                borderRadius: "full",
+              }}
+              onTransitionEnd={() => {
+                if (isMorphed) setShowOverlay(true);
+              }}
+            >
+              <Text transition="all 0.3s ease">
+                {isMorphed ? "D" : "DEM Node"}
               </Text>
             </Box>
 
@@ -76,7 +107,6 @@ const MorphingBoxes = () => {
               sx={{
                 width: isMorphed ? "100%" : "20%",
                 height: "100%",
-                zIndex: 1,
                 transitionProperty: "all",
               }}
             >
@@ -104,8 +134,7 @@ const MorphingBoxes = () => {
               pointerEvents="none"
               transition="all 0.5s ease-in-out"
               sx={{
-                opacity: isMorphed ? 1 : 0,
-                zIndex: 99,
+                opacity: showOverlay ? 1 : 0,
               }}
             >
               <Text
