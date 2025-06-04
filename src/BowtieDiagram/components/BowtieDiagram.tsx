@@ -6,6 +6,7 @@ import { DemOverview } from "./NodeBlocks/DemOverview.tsx";
 import { DemSpecific } from "./NodeBlocks/DemSpecific.tsx";
 import { AllScenariosEdges, SpecificScenariosEdges } from "./Nodes/Edges.tsx";
 import { ImpactNode, ScenarioNode, SupportFactorNode } from "./Nodes/Nodes.tsx";
+import Scratch from "./Scratch.tsx";
 
 interface BowtieDiagramProps {
   showEventPhase: boolean;
@@ -139,6 +140,9 @@ export const BowtieDiagram = ({
           <AllScenariosEdges scenarioIds={scenarioIds} />
         )}
       </VStack>
+      <Box width={"100%"} bg={"coral"}>
+        <Scratch />
+      </Box>
     </Xwrapper>
   );
 };

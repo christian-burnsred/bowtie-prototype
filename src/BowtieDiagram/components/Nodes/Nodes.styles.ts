@@ -17,7 +17,7 @@ export const scenarioNodeSx: SystemStyleObject = {
 
 export const controlNodeSx: SystemStyleObject = {
   width: "120px",
-  maxHeight: "238px",
+  height: "238px",
   borderRadius: "5px",
   bg: "white",
   boxShadow: "0 8px 16px 0 rgba(160, 174, 192, 0.32)",
