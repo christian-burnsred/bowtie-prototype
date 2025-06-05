@@ -85,7 +85,7 @@ export const DEMNodeDetailedSx: SystemStyleObject = {
   justifyItems: "flex-start",
   position: "absolute",
   transition: "all 1s ease-in-out",
-  overflow: 'hidden',
+  overflow: "hidden",
 
   "& .DEM-content-wrapper": {
     display: "flex",

@@ -109,6 +109,7 @@ export const SpecificScenariosEdges = ({
             tailShape="circle"
             headColor="black"
             tailColor="black"
+            animateDrawing={1}
           />
           <Xarrow
             key={`dem-specific-to-impact`}
@@ -124,6 +125,7 @@ export const SpecificScenariosEdges = ({
             tailShape="circle"
             headColor="black"
             tailColor="black"
+            animateDrawing={1}
           />
         </>
       ) : (
@@ -143,6 +145,7 @@ export const SpecificScenariosEdges = ({
               tailShape="circle"
               headColor="black"
               tailColor="black"
+              animateDrawing={1}
             />
             <Xarrow
               key={`control-${i}-to-impact`}
@@ -158,6 +161,7 @@ export const SpecificScenariosEdges = ({
               tailShape="circle"
               headColor="black"
               tailColor="black"
+              animateDrawing={1}
             />
           </>
         ))
@@ -176,6 +180,7 @@ export const SpecificScenariosEdges = ({
         tailShape="circle"
         headColor="black"
         tailColor="black"
+        animateDrawing={1}
       />
       <Xarrow
         key={`dem-specific-to-sf-right`}
@@ -191,6 +196,7 @@ export const SpecificScenariosEdges = ({
         tailShape="circle"
         headColor="black"
         tailColor="black"
+        animateDrawing={1}
       />
     </>
   );
