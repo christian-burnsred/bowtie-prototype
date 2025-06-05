@@ -1,20 +1,45 @@
-import { Box } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/icons";
+import { useEffect, useState } from "react";
 
+import { DemSpecific } from "./DemSpecific.tsx";
 import { ControlNode, DEMNode } from "../Nodes/Nodes.tsx";
 
 interface DemOverviewmProps {
   showEventPhase: boolean;
+  selectedScenarioId: string | null;
+  showControlDesignation: boolean;
+  selectedSupportFactor: string | null;
 }
 
-export const DemOverview = ({ showEventPhase }: DemOverviewmProps) => {
+export const DemOverview = ({
+  showEventPhase,
+  selectedScenarioId,
+  showControlDesignation,
+  selectedSupportFactor,
+}: DemOverviewmProps) => {
+  const [isMorphed, setIsMorphed] = useState(false);
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  const handleMorph = () => {
+    setIsMorphed((prev) => {
+      if (prev) setShowOverlay(false);
+      return !prev;
+    });
+  };
+
+  // FIXME - hacky, clean up logic
+  useEffect(() => {
+    handleMorph();
+  }, [selectedScenarioId]);
+
+  const [targetHeight, setTargetHeight] = useState(0);
+
   return (
-    <Box
-      display={"flex"}
-      flex={1}
-      h={"100%"}
+    <Flex
+      h={"auto"}
       w={"100%"}
       justifyContent="space-between"
-      alignItems="stretch"
+      position="relative"
     >
       <ControlNode
         id="preventative-control"
@@ -22,6 +47,9 @@ export const DemOverview = ({ showEventPhase }: DemOverviewmProps) => {
         controlCount={24}
         showEventPhase={showEventPhase}
         timeZoneType="preventative"
+        isMorphed={isMorphed}
+        setShowOverlay={setShowOverlay}
+        targetHeight={targetHeight}
       />
       <DEMNode
         id="dem-node"
@@ -31,6 +59,8 @@ export const DemOverview = ({ showEventPhase }: DemOverviewmProps) => {
           "Vehicle to Environment",
         ]}
         controlCount={26}
+        isMorphed={isMorphed}
+        setShowOverlay={setShowOverlay}
       />
       <ControlNode
         id={"mitigative-control"}
@@ -38,7 +68,18 @@ export const DemOverview = ({ showEventPhase }: DemOverviewmProps) => {
         controlCount={2}
         showEventPhase={showEventPhase}
         timeZoneType="mitigative"
+        isMorphed={isMorphed}
+        setShowOverlay={setShowOverlay}
+        targetHeight={targetHeight}
       />
-    </Box>
+
+      <DemSpecific
+        showEventPhase={showEventPhase}
+        showControlDesignation={showControlDesignation}
+        selectedSupportFactor={selectedSupportFactor}
+        showOverlay={showOverlay}
+        setTargetHeight={setTargetHeight}
+      />
+    </Flex>
   );
 };

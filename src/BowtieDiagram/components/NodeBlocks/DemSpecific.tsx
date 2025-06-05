@@ -12,18 +12,21 @@ import { useRef, useState } from "react";
 import { ControlContent } from "./ControlExpandedGridBox.tsx";
 import { DemSpecificEventPhase } from "./DemSpecificEventPhase.tsx";
 import { accordionSx, demSpecificSx } from "./NodeBlock.styles.ts";
-import { DEMNodeConcise } from "../Nodes/Nodes.tsx";
 
 interface DemSpecificProps {
   showEventPhase: boolean;
   showControlDesignation: boolean;
   selectedSupportFactor: string | null;
+  showOverlay: boolean;
+  setTargetHeight: (arg0: number) => void;
 }
 
 export const DemSpecific = ({
   showEventPhase,
   showControlDesignation,
   selectedSupportFactor,
+  showOverlay,
+  setTargetHeight,
 }: DemSpecificProps) => {
   const accordionRef = useRef(null);
   const [expandedIndices, setExpandedIndices] = useState<number[]>([]);
@@ -81,19 +84,25 @@ export const DemSpecific = ({
   });
 
   return (
-    <Box id={"dem-specific"} sx={demSpecificSx}>
-      <Box
-        sx={{
-          position: "absolute",
-          top: 0,
-          left: "50%",
-          transform: "translate(-50%, -50%)",
-          zIndex: 1,
-        }}
-      >
-        <DEMNodeConcise />
-      </Box>
-
+    <Box
+      id={"dem-specific"}
+      sx={{
+        ...demSpecificSx,
+        transition: showOverlay
+          ? "max-height 5s ease-in, all 1.5s ease-in-out"
+          : "all 0.5s ease-in-out",
+        opacity: showOverlay ? 1 : 0,
+      }}
+      ref={(el) => {
+        if (el && showOverlay) {
+          setTargetHeight(el.offsetHeight);
+          el.parentElement!.style.minHeight = el.offsetHeight + "px";
+        } else if (el) {
+          setTargetHeight(el.offsetHeight);
+          el.parentElement!.style.minHeight = "";
+        }
+      }}
+    >
       {showEventPhase ? (
         <DemSpecificEventPhase
           showControlDesignation={showControlDesignation}
@@ -106,7 +115,6 @@ export const DemSpecific = ({
           allowMultiple
           index={expandedIndices}
           onChange={(indices) => {
-            // Chakra passes a single number or an array depending on allowMultiple
             const normalized = Array.isArray(indices) ? indices : [indices];
             setExpandedIndices(normalized);
           }}

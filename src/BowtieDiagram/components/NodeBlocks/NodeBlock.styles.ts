@@ -1,12 +1,14 @@
 import { type SystemStyleObject } from "@chakra-ui/react";
 
 export const demSpecificSx: SystemStyleObject = {
+  position: "absolute",
+  top: 0,
+  left: 0,
   width: "100%",
-  // maxWidth: "250px",
+  height: "auto",
   borderRadius: "5px",
   bg: "white",
   boxShadow: "0 8px 16px 0 rgba(160, 174, 192, 0.32)",
-  position: "relative",
 };
 
 export const accordionSx: SystemStyleObject = {

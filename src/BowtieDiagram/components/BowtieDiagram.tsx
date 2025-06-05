@@ -1,10 +1,8 @@
-import { Box, HStack, VStack } from "@chakra-ui/react";
+import { Box, VStack } from "@chakra-ui/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Xwrapper, useXarrow } from "react-xarrows";
 
 import { DemOverview } from "./NodeBlocks/DemOverview.tsx";
-import { DemSpecific } from "./NodeBlocks/DemSpecific.tsx";
-import { AllScenariosEdges, SpecificScenariosEdges } from "./Nodes/Edges.tsx";
 import { ImpactNode, ScenarioNode, SupportFactorNode } from "./Nodes/Nodes.tsx";
 import Scratch from "./Scratch.tsx";
 
@@ -90,22 +88,12 @@ export const BowtieDiagram = ({
 
           {/* Controls / DEM / Support Factors */}
           <Box flex={2} h="100%" w="100%" alignContent={"center"} p={"6"}>
-            <HStack
-              h="100%"
-              w="100%"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              {selectedScenarioId ? (
-                <DemSpecific
-                  showEventPhase={showEventPhase}
-                  showControlDesignation={showControlDesignation}
-                  selectedSupportFactor={selectedSupportFactor}
-                />
-              ) : (
-                <DemOverview showEventPhase={showEventPhase} />
-              )}
-            </HStack>
+            <DemOverview
+              showEventPhase={showEventPhase}
+              selectedScenarioId={selectedScenarioId}
+              showControlDesignation={showControlDesignation}
+              selectedSupportFactor={selectedSupportFactor}
+            />
           </Box>
 
           {/*  Impact */}
@@ -131,14 +119,14 @@ export const BowtieDiagram = ({
 
           <Box flex={1} pl={"6"} />
         </Box>
-        {selectedScenarioId ? (
-          <SpecificScenariosEdges
-            scenarioId={selectedScenarioId}
-            showEventPhase={showEventPhase}
-          />
-        ) : (
-          <AllScenariosEdges scenarioIds={scenarioIds} />
-        )}
+        {/*{selectedScenarioId ? (*/}
+        {/*  <SpecificScenariosEdges*/}
+        {/*    scenarioId={selectedScenarioId}*/}
+        {/*    showEventPhase={showEventPhase}*/}
+        {/*  />*/}
+        {/*) : (*/}
+        {/*  <AllScenariosEdges scenarioIds={scenarioIds} />*/}
+        {/*)}*/}
       </VStack>
       <Box width={"100%"} bg={"coral"}>
         <Scratch />

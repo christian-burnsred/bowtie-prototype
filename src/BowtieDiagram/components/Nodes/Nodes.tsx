@@ -13,6 +13,7 @@ import { MdOutlineDirectionsCar } from "react-icons/md";
 
 import {
   DEMNodeConciseSx,
+  DEMNodeDetailedSx,
   DEMNodeSx,
   ImpactNodeSx,
   SupportFactorNodeSx,
@@ -54,6 +55,9 @@ interface ControlNodeProps {
   controlCount: number;
   showEventPhase?: boolean;
   timeZoneType: "preventative" | "mitigative";
+  isMorphed: boolean;
+  setShowOverlay: (value: boolean) => void;
+  targetHeight: number;
 }
 
 export const ControlNode = ({
@@ -62,10 +66,30 @@ export const ControlNode = ({
   controlCount,
   showEventPhase = false,
   timeZoneType,
+  isMorphed,
+  setShowOverlay,
+  targetHeight,
 }: ControlNodeProps) => {
   return (
-    <Box id={id} sx={controlNodeSx}>
-      <Text className="control-title">{title}</Text>
+    <Box
+      id={id}
+      sx={{
+        ...controlNodeSx,
+        transition: "all 1s ease-in-out",
+        height: isMorphed ? `${targetHeight}px` : "238px",
+        width: isMorphed ? "100%" : "20%",
+      }}
+      onTransitionEnd={() => {
+        if (isMorphed) setShowOverlay(true);
+      }}
+    >
+      <Text
+        className="control-title"
+        transition={"opacity 0.3s"}
+        opacity={isMorphed ? 0 : 1}
+      >
+        {title}
+      </Text>
       {showEventPhase ? (
         timeZoneType == "preventative" ? (
           <PreventitiveTimezone />
@@ -76,7 +100,13 @@ export const ControlNode = ({
         ""
       )}
       <Box className="control-number-container">
-        <Text className="control-number">{controlCount} controls</Text>
+        <Text
+          transition="opacity 0.3s"
+          opacity={isMorphed ? 0 : 1}
+          className="control-number"
+        >
+          {controlCount} controls
+        </Text>
       </Box>
     </Box>
   );
@@ -106,11 +136,64 @@ interface DEMNodeProps {
   id: string;
   DEMs: string[];
   controlCount: number;
+  isMorphed: boolean;
+  setShowOverlay: (value: boolean) => void;
 }
 
-export const DEMNode = ({ id, DEMs, controlCount }: DEMNodeProps) => {
+export const DEMNode = ({
+  id,
+  DEMs,
+  controlCount,
+  isMorphed,
+  setShowOverlay,
+}: DEMNodeProps) => {
   return (
-    <Box id={id} sx={DEMNodeSx}>
+    <Box
+      id={id}
+      sx={{
+        ...DEMNodeSx,
+        width: isMorphed ? "100px" : "238px",
+        height: isMorphed ? "100px" : "238px",
+        top: isMorphed ? "0" : "50%",
+        left: isMorphed ? "50%" : "50%",
+        transform: isMorphed
+          ? "translate(-50%, -50%)"
+          : "translate(-50%, -50%)",
+        zIndex: 2,
+        transitionProperty: "all",
+        transitionDuration: "0.5s",
+      }}
+      onTransitionEnd={() => {
+        if (isMorphed) setShowOverlay(true);
+      }}
+    >
+      {isMorphed ? (
+        <DEMNodeConcise />
+      ) : (
+        <DEMNodeDetailed DEMs={DEMs} controlCount={controlCount} />
+      )}
+    </Box>
+  );
+};
+
+const DEMNodeConcise = () => {
+  return (
+    <Box sx={DEMNodeConciseSx}>
+      <Box className="DEM-content-wrapper">
+        <Text className="DEM-title-text">DEM</Text>
+        <Text className="DEM-text">Vehicle to Person</Text>
+      </Box>
+    </Box>
+  );
+};
+
+interface DEMNodeDetailedProps {
+  DEMs: string[];
+  controlCount: number;
+}
+const DEMNodeDetailed = ({ DEMs, controlCount }: DEMNodeDetailedProps) => {
+  return (
+    <Box sx={DEMNodeDetailedSx}>
       <Icon
         className="DEM-node-icon"
         as={MdOutlineDirectionsCar}
@@ -128,17 +211,6 @@ export const DEMNode = ({ id, DEMs, controlCount }: DEMNodeProps) => {
         <Text className="DEM-control-text">
           {controlCount} controls are used to prevent and mitigate
         </Text>
-      </Box>
-    </Box>
-  );
-};
-
-export const DEMNodeConcise = () => {
-  return (
-    <Box sx={DEMNodeConciseSx}>
-      <Box className="DEM-content-wrapper">
-        <Text className="DEM-title-text">DEM</Text>
-        <Text className="DEM-text">Vehicle to Person</Text>
       </Box>
     </Box>
   );

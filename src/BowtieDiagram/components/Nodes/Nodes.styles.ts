@@ -17,7 +17,8 @@ export const scenarioNodeSx: SystemStyleObject = {
 
 export const controlNodeSx: SystemStyleObject = {
   width: "120px",
-  height: "238px",
+  minHeight: "238px",
+  // height: "100%",
   borderRadius: "5px",
   bg: "white",
   boxShadow: "0 8px 16px 0 rgba(160, 174, 192, 0.32)",
@@ -53,8 +54,21 @@ export const controlNodeSx: SystemStyleObject = {
 };
 
 export const DEMNodeSx: SystemStyleObject = {
-  width: "238px",
-  height: "238px",
+  borderRadius: "full",
+  border: "1px solid white",
+  bg: "#01ab8b",
+  boxShadow: "0 8px 16px 0 rgba(160, 174, 192, 0.32)",
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyItems: "flex-start",
+  position: "absolute",
+  transition: "all 1s ease-in-out",
+};
+
+export const DEMNodeDetailedSx: SystemStyleObject = {
+  height: "100%",
+  width: "100%",
   py: "4",
   px: "6",
   borderRadius: "full",
@@ -65,6 +79,8 @@ export const DEMNodeSx: SystemStyleObject = {
   flexDirection: "column",
   alignItems: "center",
   justifyItems: "flex-start",
+  position: "absolute",
+  transition: "all 1s ease-in-out",
 
   "& .DEM-content-wrapper": {
     display: "flex",
@@ -102,22 +118,12 @@ export const DEMNodeSx: SystemStyleObject = {
 };
 
 export const DEMNodeConciseSx: SystemStyleObject = {
-  width: "100px",
-  height: "100px",
-  borderRadius: "full",
-  border: "1px solid white",
-  bg: "#01ab8b",
-  boxShadow: "0 8px 16px 0 rgba(160, 174, 192, 0.32)",
   display: "flex",
-
-  "& .DEM-content-wrapper": {
-    display: "flex",
-    flexDirection: "column",
-    flex: 1,
-    textAlign: "center",
-    alignItems: "center",
-    justifyContent: "center",
-  },
+  flexDirection: "column",
+  flex: 1,
+  textAlign: "center",
+  alignItems: "center",
+  justifyContent: "center",
 
   "& .DEM-title-text": {
     textAlign: "center",

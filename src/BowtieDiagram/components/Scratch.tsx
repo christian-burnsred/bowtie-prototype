@@ -14,7 +14,7 @@ const MorphingBoxes = () => {
   };
 
   return (
-    <Box bg="gray.100" minH="100vh">
+    <Box bg="white" minH="100vh">
       <Box maxW="4xl" p="auto">
         <Button onClick={handleMorph} colorScheme="blue" variant="solid" mb={6}>
           {isMorphed ? "Split Boxes" : "Fuse Boxes"}
