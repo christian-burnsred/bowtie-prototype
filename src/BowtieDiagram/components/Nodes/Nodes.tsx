@@ -80,7 +80,7 @@ export const ControlNode = ({
       id={id}
       sx={{
         ...controlNodeSx,
-        transition: showOverlay ? "none" : "all 1s ease-in-out",
+        transition: showOverlay ? "none" : "all 0.3s ease-in-out",
         height: isMorphed ? `${targetHeight}px` : "238px",
         width: isMorphed ? (showEventPhase ? width : "100%") : "20%",
       }}
@@ -91,7 +91,7 @@ export const ControlNode = ({
       <Text
         className="control-title"
         sx={{
-          transition: "all 1s ease-in-out",
+          transition: "all 0.3s ease-in-out",
           mt: isMorphed && showEventPhase ? "26px" : "0px",
           h: "48px",
           bg: isMorphed && showEventPhase ? "gray.200" : "",
@@ -176,7 +176,7 @@ export const DEMNode = ({
         transform: "translate(-50%, -50%)",
         zIndex: 2,
         transitionProperty: "all",
-        transitionDuration: "1s",
+        transitionDuration: "0.3s",
       }}
       onTransitionEnd={() => {
         if (isMorphed) setShowOverlay(true);
