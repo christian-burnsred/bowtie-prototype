@@ -89,9 +89,11 @@ export const DemSpecific = ({
       sx={{
         ...demSpecificSx,
         transition: showOverlay
-          ? "max-height 5s ease-in, all 1.5s ease-in-out"
+          ? "all 1.0s ease-in-out"
           : "all 0.5s ease-in-out",
+        transitionDelay: showOverlay && showEventPhase ? "0.3s" : "0s",
         opacity: showOverlay ? 1 : 0,
+        visibility: showOverlay ? "visible" : "hidden",
       }}
       ref={(el) => {
         if (el && showOverlay) {

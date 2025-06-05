@@ -29,10 +29,14 @@ export const controlNodeSx: SystemStyleObject = {
 
   "& .control-title": {
     p: "8px",
+    w: "100%",
     textAlign: "center",
     lineHeight: "normal",
     fontWeight: "bold",
     fontSize: "sm",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 
   "& .control-number-container": {
@@ -57,7 +61,7 @@ export const DEMNodeSx: SystemStyleObject = {
   borderRadius: "full",
   border: "1px solid white",
   bg: "#01ab8b",
-  boxShadow: "0 8px 16px 0 rgba(160, 174, 192, 0.32)",
+  boxShadow: "lg",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
@@ -74,13 +78,14 @@ export const DEMNodeDetailedSx: SystemStyleObject = {
   borderRadius: "full",
   border: "1px solid white",
   bg: "#01ab8b",
-  boxShadow: "0 8px 16px 0 rgba(160, 174, 192, 0.32)",
+  boxShadow: "lg",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
   justifyItems: "flex-start",
   position: "absolute",
   transition: "all 1s ease-in-out",
+  overflow: 'hidden',
 
   "& .DEM-content-wrapper": {
     display: "flex",

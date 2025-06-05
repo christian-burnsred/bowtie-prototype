@@ -9,6 +9,7 @@ import {
   Text,
   UnorderedList,
 } from "@chakra-ui/react";
+import { useState } from "react";
 import { MdOutlineDirectionsCar } from "react-icons/md";
 
 import {
@@ -56,8 +57,10 @@ interface ControlNodeProps {
   showEventPhase?: boolean;
   timeZoneType: "preventative" | "mitigative";
   isMorphed: boolean;
+  showOverlay: boolean;
   setShowOverlay: (value: boolean) => void;
   targetHeight: number;
+  width: string;
 }
 
 export const ControlNode = ({
@@ -67,17 +70,19 @@ export const ControlNode = ({
   showEventPhase = false,
   timeZoneType,
   isMorphed,
+  showOverlay,
   setShowOverlay,
   targetHeight,
+  width,
 }: ControlNodeProps) => {
   return (
     <Box
       id={id}
       sx={{
         ...controlNodeSx,
-        transition: "all 1s ease-in-out",
+        transition: showOverlay ? "none" : "all 1s ease-in-out",
         height: isMorphed ? `${targetHeight}px` : "238px",
-        width: isMorphed ? "100%" : "20%",
+        width: isMorphed ? (showEventPhase ? width : "100%") : "20%",
       }}
       onTransitionEnd={() => {
         if (isMorphed) setShowOverlay(true);
@@ -85,23 +90,28 @@ export const ControlNode = ({
     >
       <Text
         className="control-title"
-        transition={"opacity 0.3s"}
-        opacity={isMorphed ? 0 : 1}
+        sx={{
+          transition: "all 1s ease-in-out",
+          mt: isMorphed && showEventPhase ? "26px" : "0px",
+          h: "48px",
+          bg: isMorphed && showEventPhase ? "gray.200" : "",
+        }}
+        opacity={isMorphed && !showEventPhase ? 0 : 1}
       >
         {title}
       </Text>
       {showEventPhase ? (
         timeZoneType == "preventative" ? (
-          <PreventitiveTimezone />
+          <PreventitiveTimezone isMorphed={isMorphed} />
         ) : (
-          <MitigativeTimezone />
+          <MitigativeTimezone isMorphed={isMorphed} />
         )
       ) : (
         ""
       )}
       <Box className="control-number-container">
         <Text
-          transition="opacity 0.3s"
+          transition="opacity 0.5s"
           opacity={isMorphed ? 0 : 1}
           className="control-number"
         >
@@ -112,9 +122,12 @@ export const ControlNode = ({
   );
 };
 
-const PreventitiveTimezone = () => {
+interface TimeZoneProps {
+  isMorphed: boolean;
+}
+const PreventitiveTimezone = ({ isMorphed }: TimeZoneProps) => {
   return (
-    <Grid w={"100%"} templateColumns="repeat(4, 1fr)" gap={0}>
+    <Grid w={"100%"} templateColumns="repeat(4, 1fr)" gap={isMorphed ? 1 : 0}>
       <GridItem w="100%" h="2" bg="#a0aec0" />
       <GridItem w="100%" h="2" bg="#f67b2f" />
       <GridItem w="100%" h="2" bg="#d04d97" />
@@ -123,9 +136,9 @@ const PreventitiveTimezone = () => {
   );
 };
 
-const MitigativeTimezone = () => {
+const MitigativeTimezone = ({ isMorphed }: TimeZoneProps) => {
   return (
-    <Grid w={"100%"} templateColumns="repeat(2, 1fr)" gap={0}>
+    <Grid w={"100%"} templateColumns="repeat(2, 1fr)" gap={isMorphed ? 1 : 0}>
       <GridItem w="100%" h="2" bg="#742068" />
       <GridItem w="100%" h="2" bg="#708096" />
     </Grid>
@@ -136,6 +149,7 @@ interface DEMNodeProps {
   id: string;
   DEMs: string[];
   controlCount: number;
+  showEventPhase: boolean;
   isMorphed: boolean;
   setShowOverlay: (value: boolean) => void;
 }
@@ -144,9 +158,12 @@ export const DEMNode = ({
   id,
   DEMs,
   controlCount,
+  showEventPhase,
   isMorphed,
   setShowOverlay,
 }: DEMNodeProps) => {
+  const [selectedDEM, setSelectedDEM] = useState(DEMs[0] || "");
+
   return (
     <Box
       id={id}
@@ -154,34 +171,41 @@ export const DEMNode = ({
         ...DEMNodeSx,
         width: isMorphed ? "100px" : "238px",
         height: isMorphed ? "100px" : "238px",
-        top: isMorphed ? "0" : "50%",
-        left: isMorphed ? "50%" : "50%",
-        transform: isMorphed
-          ? "translate(-50%, -50%)"
-          : "translate(-50%, -50%)",
+        top: isMorphed ? "0" : "119px",
+        left: isMorphed && showEventPhase ? "66.6667%" : "50%",
+        transform: "translate(-50%, -50%)",
         zIndex: 2,
         transitionProperty: "all",
-        transitionDuration: "0.5s",
+        transitionDuration: "1s",
       }}
       onTransitionEnd={() => {
         if (isMorphed) setShowOverlay(true);
       }}
     >
       {isMorphed ? (
-        <DEMNodeConcise />
+        <DEMNodeConcise selectedDEM={selectedDEM} />
       ) : (
-        <DEMNodeDetailed DEMs={DEMs} controlCount={controlCount} />
+        <DEMNodeDetailed
+          DEMs={DEMs}
+          controlCount={controlCount}
+          onDEMChange={setSelectedDEM}
+          selectedDEM={selectedDEM}
+        />
       )}
     </Box>
   );
 };
 
-const DEMNodeConcise = () => {
+interface DEMNodeConciseProps {
+  selectedDEM: string;
+}
+
+const DEMNodeConcise = ({ selectedDEM }: DEMNodeConciseProps) => {
   return (
     <Box sx={DEMNodeConciseSx}>
       <Box className="DEM-content-wrapper">
         <Text className="DEM-title-text">DEM</Text>
-        <Text className="DEM-text">Vehicle to Person</Text>
+        <Text className="DEM-text">{selectedDEM}</Text>
       </Box>
     </Box>
   );
@@ -190,8 +214,16 @@ const DEMNodeConcise = () => {
 interface DEMNodeDetailedProps {
   DEMs: string[];
   controlCount: number;
+  selectedDEM: string;
+  onDEMChange: (value: string) => void;
 }
-const DEMNodeDetailed = ({ DEMs, controlCount }: DEMNodeDetailedProps) => {
+
+const DEMNodeDetailed = ({
+  DEMs,
+  controlCount,
+  selectedDEM,
+  onDEMChange,
+}: DEMNodeDetailedProps) => {
   return (
     <Box sx={DEMNodeDetailedSx}>
       <Icon
@@ -201,7 +233,12 @@ const DEMNodeDetailed = ({ DEMs, controlCount }: DEMNodeDetailedProps) => {
       />
       <Box className="DEM-content-wrapper">
         <Text className="DEM-title-text">DEM</Text>
-        <Select className="DEM-selector" size="xs">
+        <Select
+          className="DEM-selector"
+          size="xs"
+          value={selectedDEM}
+          onChange={(e) => onDEMChange(e.target.value)}
+        >
           {DEMs.map((dem, index) => (
             <option key={index} value={dem}>
               {dem}

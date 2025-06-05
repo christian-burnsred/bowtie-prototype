@@ -3,8 +3,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Xwrapper, useXarrow } from "react-xarrows";
 
 import { DemOverview } from "./NodeBlocks/DemOverview.tsx";
+import { AllScenariosEdges, SpecificScenariosEdges } from "./Nodes/Edges.tsx";
 import { ImpactNode, ScenarioNode, SupportFactorNode } from "./Nodes/Nodes.tsx";
-import Scratch from "./Scratch.tsx";
 
 interface BowtieDiagramProps {
   showEventPhase: boolean;
@@ -119,18 +119,15 @@ export const BowtieDiagram = ({
 
           <Box flex={1} pl={"6"} />
         </Box>
-        {/*{selectedScenarioId ? (*/}
-        {/*  <SpecificScenariosEdges*/}
-        {/*    scenarioId={selectedScenarioId}*/}
-        {/*    showEventPhase={showEventPhase}*/}
-        {/*  />*/}
-        {/*) : (*/}
-        {/*  <AllScenariosEdges scenarioIds={scenarioIds} />*/}
-        {/*)}*/}
+        {selectedScenarioId ? (
+          <SpecificScenariosEdges
+            scenarioId={selectedScenarioId}
+            showEventPhase={showEventPhase}
+          />
+        ) : (
+          <AllScenariosEdges scenarioIds={scenarioIds} />
+        )}
       </VStack>
-      <Box width={"100%"} bg={"coral"}>
-        <Scratch />
-      </Box>
     </Xwrapper>
   );
 };

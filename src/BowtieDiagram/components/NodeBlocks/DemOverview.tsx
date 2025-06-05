@@ -1,5 +1,5 @@
 import { Flex } from "@chakra-ui/icons";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { DemSpecific } from "./DemSpecific.tsx";
 import { ControlNode, DEMNode } from "../Nodes/Nodes.tsx";
@@ -19,6 +19,7 @@ export const DemOverview = ({
 }: DemOverviewmProps) => {
   const [isMorphed, setIsMorphed] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
+  const prevScenarioId = useRef<string | null>(null);
 
   const handleMorph = () => {
     setIsMorphed((prev) => {
@@ -27,9 +28,15 @@ export const DemOverview = ({
     });
   };
 
-  // FIXME - hacky, clean up logic
   useEffect(() => {
-    handleMorph();
+    const wasNull = prevScenarioId.current == null;
+    const isNowNull = selectedScenarioId == null;
+
+    if (wasNull !== isNowNull) {
+      handleMorph();
+    }
+
+    prevScenarioId.current = selectedScenarioId;
   }, [selectedScenarioId]);
 
   const [targetHeight, setTargetHeight] = useState(0);
@@ -48,8 +55,10 @@ export const DemOverview = ({
         showEventPhase={showEventPhase}
         timeZoneType="preventative"
         isMorphed={isMorphed}
+        showOverlay={showOverlay}
         setShowOverlay={setShowOverlay}
         targetHeight={targetHeight}
+        width={"calc(66.667% - 0.125rem)"}
       />
       <DEMNode
         id="dem-node"
@@ -59,6 +68,7 @@ export const DemOverview = ({
           "Vehicle to Environment",
         ]}
         controlCount={26}
+        showEventPhase={showEventPhase}
         isMorphed={isMorphed}
         setShowOverlay={setShowOverlay}
       />
@@ -69,8 +79,10 @@ export const DemOverview = ({
         showEventPhase={showEventPhase}
         timeZoneType="mitigative"
         isMorphed={isMorphed}
+        showOverlay={showOverlay}
         setShowOverlay={setShowOverlay}
         targetHeight={targetHeight}
+        width={"calc(33.333% - 0.125rem)"}
       />
 
       <DemSpecific
