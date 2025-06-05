@@ -88,9 +88,7 @@ export const DemSpecific = ({
       id={"dem-specific"}
       sx={{
         ...demSpecificSx,
-        transition: showOverlay
-          ? "all 1.0s ease-in-out"
-          : "all 0.5s ease-in-out",
+        transition: "all 0.5s ease-in-out",
         transitionDelay: showOverlay && showEventPhase ? "0.3s" : "0s",
         opacity: showOverlay ? 1 : 0,
         visibility: showOverlay ? "visible" : "hidden",

@@ -22,31 +22,41 @@ export const AllScenariosEdges = ({ scenarioIds }: AllScenariosEdgesProps) => {
           tailShape={"circle"}
           headColor={"black"}
           tailColor={"black"}
+          animateDrawing={0.5}
         />
       ))}
       <Xarrow
         key={`arrow-preventative-to-dem`}
         start={"preventative-control"}
         end={"dem-node"}
+        startAnchor={"right"}
+        endAnchor={"left"}
         color="#01ab8b"
         strokeWidth={1}
         curveness={0.3}
+        animateDrawing={0.5}
       />
       <Xarrow
         key={`arrow-dem-to-mitigative`}
         start={"dem-node"}
         end={"mitigative-control"}
+        startAnchor={"right"}
+        endAnchor={"left"}
         color="#db4742"
         strokeWidth={1}
         curveness={0.3}
+        animateDrawing={0.5}
       />
       <Xarrow
         key={`arrow-mitigative-to-impact`}
         start={"mitigative-control"}
         end={"impact-node"}
+        startAnchor={"right"}
+        endAnchor={"left"}
         color="#db4742"
         strokeWidth={1}
         curveness={0.3}
+        animateDrawing={0.5}
       />
       <Xarrow
         key={`arrow-preventative-to-sf`}
@@ -62,6 +72,7 @@ export const AllScenariosEdges = ({ scenarioIds }: AllScenariosEdgesProps) => {
         tailShape={"circle"}
         headColor={"black"}
         tailColor={"black"}
+        animateDrawing={0.5}
       />
       <Xarrow
         key={`arrow-mitigative-to-sf`}
@@ -77,6 +88,7 @@ export const AllScenariosEdges = ({ scenarioIds }: AllScenariosEdgesProps) => {
         tailShape={"circle"}
         headColor={"black"}
         tailColor={"black"}
+        animateDrawing={0.5}
       />
     </>
   );
@@ -180,7 +192,7 @@ export const SpecificScenariosEdges = ({
         tailShape="circle"
         headColor="black"
         tailColor="black"
-        animateDrawing={1}
+        animateDrawing={0.5}
       />
       <Xarrow
         key={`dem-specific-to-sf-right`}
@@ -196,7 +208,7 @@ export const SpecificScenariosEdges = ({
         tailShape="circle"
         headColor="black"
         tailColor="black"
-        animateDrawing={1}
+        animateDrawing={0.5}
       />
     </>
   );
